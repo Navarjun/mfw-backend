@@ -57,6 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-
-public/node_modules
-public/node_modules/*
+dist/assets/*.js
+dist/assets/*.js.map

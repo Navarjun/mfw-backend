@@ -1,0 +1,130 @@
+body, html {
+  padding: 0px;
+  padding-bottom: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.sidebar {
+    position: fixed;
+    right: 0px;
+}
+
+#images-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+#images-container > div {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+
+#images-container > div > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+#images-container > div.done {
+    background: rgba(0,0,0,0.2);
+}
+
+#questionnaire-form {
+    display: flex;
+}
+#questionnaire-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.sidebar {
+    position: fixed;
+    overflow: scroll;
+    height: 100%;
+}
+.hide {
+    display: none;
+}
+#questionnaire-form > section {
+    margin-right: 30px;
+    flex: 1;
+}
+#questionnaire-form > section h3 {
+    color: rgba(200, 80, 100, 1);
+}
+
+#questionnaire-form > section > .form-group > label {
+    font-size: 1.2em;
+}
+.form-group > label {
+    display: block;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.input-group > div {
+    padding: 5px;
+}
+
+.form-check-label {
+    margin-left: 15px;
+}
+.form-check-label > input {
+    margin-right: 5px;
+}
+button {
+    cursor: pointer;
+}
+
+.flex-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.flex-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.flex-edges {
+    display: flex;
+    justify-content: space-between;
+}
+.inline-block {
+    display: inline-block;
+}
+.full-width {
+    width: 100%;
+}
+
+.popup {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 66.6666%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+.popup > img {
+    max-height: 100%;
+    max-width: 100%;
+}
