@@ -139,3 +139,9 @@ button {
     max-height: 100%;
     max-width: 100%;
 }
+
+.form-control.check-textbox {
+    /* textbox that is connected to checkbox */
+    margin-left: 40px;
+    width: calc(100% - 40px);
+}

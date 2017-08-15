@@ -29398,20 +29398,28 @@ var Questionnaire = exports.Questionnaire = function (_React$Component) {
             obj.mBackside = value('mBackside');
             obj.mRotated = value('mRotated', false, true);
             obj.mCondition = value('mCondition', true);
+            checkOther(obj, 'mCondition');
             obj.mMade = value('mMade', true);
+            checkOther(obj, 'mMade');
             obj.mContains = value('mContains', true);
+            checkOther(obj, 'mContains');
             obj.mNotesArtifact = value('mNotesArtifact');
             // Image and text
             obj.mShow = value('mShow');
             obj.mText = value('mText');
             obj.mLetteringStyle = value('mLetteringStyle', true);
+            checkOther(obj, 'mLetteringStyle');
             obj.mNotesImageAndText = value('mNotesImageAndText');
             // Intent
             obj.mConcern = value('mConcern', true);
+            checkOther(obj, 'mConcern');
             obj.mTone = value('mTone', true);
+            checkOther(obj, 'mTone');
             obj.mCulturalContext = value('mCulturalContext', true);
+            checkOther(obj, 'mCulturalContext');
             obj.mAdditionalTheme = value('mAdditionalTheme');
             obj.mStrategy = value('mStrategy', true);
+            checkOther(obj, 'mStrategy');
             obj.mSigned = value('mSigned');
             obj.mNotesIntent = value('mNotesIntent');
             // Additional
@@ -29601,6 +29609,18 @@ function value(name) {
     return document.querySelector('input[name=\'' + name + '\']').value;
 }
 
+var checkOther = function checkOther(obj, name) {
+    if (obj[name] && obj[name].length && obj[name].includes('other')) {
+        var input = document.querySelector('input[name=\'' + (name + '-textbox') + '\']');
+        if (input && input.value) {
+            var array = input.value.split(',').map(function (d) {
+                return d.trim();
+            });
+            obj[name] = obj[name].concat(array);
+        }
+    }
+};
+
 /***/ }),
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -29752,27 +29772,39 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Checkbox = exports.Checkbox = function (_React$Component) {
     _inherits(Checkbox, _React$Component);
 
-    function Checkbox() {
+    function Checkbox(props) {
         _classCallCheck(this, Checkbox);
 
-        return _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
+
+        _this.state = { checked: false };
+        _this.toggleTextbox = _this.toggleTextbox.bind(_this);
+        return _this;
     }
 
     _createClass(Checkbox, [{
+        key: 'toggleTextbox',
+        value: function toggleTextbox(e) {
+            this.setState({ checked: e.target.checked });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var value = this.props.value;
             var label = this.props.label;
             var name = this.props.name;
+            var textbox = this.props.textbox && this.state.checked ? _react2.default.createElement('input', { type: 'text', className: 'form-control check-textbox', name: name + '-textbox', placeholder: 'comma-seperated values' }) : null;
+
             return _react2.default.createElement(
                 'div',
                 { className: 'form-check' },
                 _react2.default.createElement(
                     'label',
                     { className: 'form-check-label' },
-                    _react2.default.createElement('input', { className: 'form-check-input control-checkbox', type: 'checkbox', name: name, value: value }),
+                    _react2.default.createElement('input', { className: 'form-check-input control-checkbox', type: 'checkbox', name: name, onChange: this.toggleTextbox, value: value }),
                     label
-                )
+                ),
+                textbox
             );
         }
     }]);

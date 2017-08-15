@@ -34,20 +34,28 @@ export class Questionnaire extends React.Component {
         obj.mBackside = value('mBackside');
         obj.mRotated = value('mRotated', false, true);
         obj.mCondition = value('mCondition', true);
+        checkOther(obj, 'mCondition');
         obj.mMade = value('mMade', true);
+        checkOther(obj, 'mMade');
         obj.mContains = value('mContains', true);
+        checkOther(obj, 'mContains');
         obj.mNotesArtifact = value('mNotesArtifact');
         // Image and text
         obj.mShow = value('mShow');
         obj.mText = value('mText');
         obj.mLetteringStyle = value('mLetteringStyle', true);
+        checkOther(obj, 'mLetteringStyle');
         obj.mNotesImageAndText = value('mNotesImageAndText');
         // Intent
         obj.mConcern = value('mConcern', true);
+        checkOther(obj, 'mConcern');
         obj.mTone = value('mTone', true);
+        checkOther(obj, 'mTone');
         obj.mCulturalContext = value('mCulturalContext', true);
+        checkOther(obj, 'mCulturalContext');
         obj.mAdditionalTheme = value('mAdditionalTheme');
         obj.mStrategy = value('mStrategy', true);
+        checkOther(obj, 'mStrategy');
         obj.mSigned = value('mSigned');
         obj.mNotesIntent = value('mNotesIntent');
         // Additional
@@ -266,3 +274,13 @@ function value (name, checkbox = false, isBool = false) {
     }
     return document.querySelector(`input[name='${name}']`).value;
 }
+
+const checkOther = function (obj, name) {
+    if (obj[name] && obj[name].length && obj[name].includes('other')) {
+        const input = document.querySelector(`input[name='${name + '-textbox'}']`);
+        if (input && input.value) {
+            const array = input.value.split(',').map(d => d.trim());
+            obj[name] = obj[name].concat(array);
+        }
+    }
+};
