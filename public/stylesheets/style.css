@@ -110,10 +110,13 @@ button {
 }
 
 .input-group {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 .input-group > * {
     display: block;
+    width: 50%;
 }
 .input-group > * > label {
     display: block;
