@@ -188,7 +188,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Immigration' },
                             { label: 'Hate' },
                             { label: 'Indigenous' },
-                            { label: 'Institutions, supreme court, political parties' },
+                            { label: 'Institutions/supreme court/political parties' },
                             { label: 'Islam' },
                             { label: 'Labor' },
                             { label: 'Latino/a/x' },
