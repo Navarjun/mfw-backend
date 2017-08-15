@@ -10,7 +10,7 @@ obj.getImages = function (limit = 100, skip = 0, callback = null) {
     if (!skip) { skip = 0; }
 
     const query = ImageModel.find();
-    query.select('-_id filename colors properties logos text hasManualData');
+    // query.select('-_id filename colors properties logos text hasManualData');
     query.limit(+limit);
     query.skip(+skip);
 

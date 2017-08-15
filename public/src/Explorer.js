@@ -45,6 +45,7 @@ export class ExplorerLayout extends React.Component {
                 const image = images.filter(d => d.filename === this.state.selectedImage.filename)[0];
                 image.hasManualData = true;
             }
+            this.setState({ selectedImage: null });
         }, false);
         xhr.send(JSON.stringify(obj));
     }
@@ -61,7 +62,7 @@ export class ExplorerLayout extends React.Component {
         const questionnaireDiv = this.state.selectedImage
             ? <div className='sidebar d-sm-block bg-light d-none col-sm-4'>
                 <div id='questionnaire-container'>
-                    <Questionnaire filename={this.state.selectedImage.filename} onSubmit={this.submit} onCancel={this.cancel}></Questionnaire>
+                    <Questionnaire filename={this.state.selectedImage.filename} data={this.state.selectedImage} onSubmit={this.submit} onCancel={this.cancel}></Questionnaire>
                 </div>
             </div> : '';
 
