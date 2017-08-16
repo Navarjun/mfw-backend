@@ -218,6 +218,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Loving' },
                             { label: 'Insults' },
                             { label: 'Indignation' },
+                            { label: 'Determined' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Cultural Context */}
