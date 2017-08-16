@@ -1,4 +1,5 @@
 import React from 'react';
+import {Navbar} from './Navbar';
 import {Questionnaire} from './Questionnaire';
 import {json} from 'd3';
 
@@ -26,7 +27,7 @@ export class ExplorerLayout extends React.Component {
     }
 
     loadMore () {
-        json('/api/v1/images?skip=' + this.state.images.length, (err, images) => {
+        this.props.loadMore(this.state.images.length, (err, images) => {
             if (err) {
                 window.alert('error loading more images');
             }
@@ -44,8 +45,8 @@ export class ExplorerLayout extends React.Component {
                 const images = this.state.images;
                 const image = images.filter(d => d.filename === this.state.selectedImage.filename)[0];
                 image.hasManualData = true;
+                this.setState({ selectedImage: null });
             }
-            this.setState({ selectedImage: null });
         }, false);
         xhr.send(JSON.stringify(obj));
     }
@@ -72,6 +73,7 @@ export class ExplorerLayout extends React.Component {
 
         return (
             <div>
+                <Navbar active={ this.props.tagged ? 'tagged' : 'untagged' }></Navbar>
                 <div className='container-fluid'>
                     <div className='row'>
                         <div className='col-sm-12'>

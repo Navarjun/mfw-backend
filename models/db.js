@@ -5,11 +5,18 @@ const ImageModel = mongoose.model('image', schemas.image);
 
 const obj = {};
 
-obj.getImages = function (limit = 100, skip = 0, callback = null) {
+obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
     if (!limit) { limit = 100; }
     if (!skip) { skip = 0; }
 
-    const query = ImageModel.find();
+    if (searchQuery.ne) {
+        const columns = searchQuery.ne.split(',');
+        columns.forEach(d => {
+            searchQuery[d] = { $exists: false };
+        });
+        delete searchQuery.ne;
+    }
+    const query = ImageModel.find(searchQuery).sort({ 'filename': 1 });
     // query.select('-_id filename colors properties logos text hasManualData');
     query.limit(+limit);
     query.skip(+skip);

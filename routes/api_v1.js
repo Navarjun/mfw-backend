@@ -6,7 +6,12 @@ router.get('/images', function (req, res) {
     const queryString = req.query || {};
     console.log(req.query);
 
-    db.getImages(queryString.limit, queryString.skip, (err, docs) => {
+    const limit = queryString.limit;
+    const skip = queryString.skip;
+    delete queryString.limit;
+    delete queryString.skip;
+
+    db.getImages(queryString.limit, queryString.skip, queryString, (err, docs) => {
         if (err) {
             console.log(err);
             res.send(400);
