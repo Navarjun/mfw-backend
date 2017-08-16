@@ -29484,8 +29484,8 @@ var Questionnaire = exports.Questionnaire = function (_React$Component) {
                         _react2.default.createElement(_RadioGroup.RadioGroup, { name: 'mBackside', value: this.data.mBackside, label: 'Is it backside of the poster?', options: [{ label: 'Yes' }, { label: 'No' }, { label: 'Maybe' }] }),
                         _react2.default.createElement(_RadioGroup.RadioGroup, { name: 'mRotated', value: this.data.mRotated, label: 'Is the image rotated?', options: [{ label: 'Yes', value: true }, { label: 'No', value: false }] }),
                         _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'In what condition is the poster?', values: this.data.mCondition, name: 'mCondition', options: [{ label: 'Mint' }, { label: 'Good' }, { label: 'Poor' }, { label: 'Folded' }, { label: 'Torn' }, { label: 'Stained' }, { label: 'Other', textbox: true }] }),
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'How is it made?', values: this.data.mMade, name: 'mMade', options: [{ label: 'Drawing' }, { label: 'Print' }, { label: 'Marker' }, { label: 'Crayola' }, { label: 'Kids Drawing' }, { label: 'Other', textbox: true }] }),
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'This poster contains:', values: this.data.mContains, name: 'mContains', options: [{ label: 'Text only' }, { label: 'Text and illustration' }, { label: 'Text and photography' }, { label: 'Collage' }, { label: 'images only' }, { label: 'illustration only' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'How is it made?', values: this.data.mMade, name: 'mMade', options: [{ label: 'Drawing' }, { label: 'Print' }, { label: 'Marker' }, { label: 'Collage' }, { label: 'Crayola' }, { label: 'Kids Drawing' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'This poster contains:', values: this.data.mContains, name: 'mContains', options: [{ label: 'Text' }, { label: 'Illustration' }, { label: 'Photography' }, { label: 'Collage' }, { label: 'Drawing' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mNotesArtifact', value: this.data.mNotesArtifact, label: 'Notes for Section 1' }),
                         _react2.default.createElement(
                             'div',
@@ -29507,7 +29507,7 @@ var Questionnaire = exports.Questionnaire = function (_React$Component) {
                         { className: this.state.selectedSection === 1 ? '' : 'hide', id: 'questionnaire-image-and-text' },
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mShow', value: this.data.mShow, label: 'What does it show? (e.g. cat, coat hanger, pink triangle, etc.)' }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mText', value: this.data.mText, label: 'What does the text say? (Please transcribe the poster text, if any)' }),
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What lettering style is used for the poster text', values: this.data.mLetteringStyle, name: 'mLetteringStyle', options: [{ label: 'Typeface (imitative)' }, { label: 'Block' }, { label: 'Cursive' }, { label: 'Decorative' }, { label: 'Sans serif' }, { label: 'Serif' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What lettering style is used for the poster text', values: this.data.mLetteringStyle, name: 'mLetteringStyle', options: [{ label: 'Typeface (imitative)' }, { label: 'Block' }, { label: 'Cursive' }, { label: 'Decorative' }, { label: 'Sans serif' }, { label: 'Serif' }, { label: 'Hand-written' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mNotesImageAndText', value: this.data.mNotesImageAndText, label: 'Notes for Section 2' }),
                         _react2.default.createElement(
                             'div',
@@ -29708,10 +29708,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var RadioButton = exports.RadioButton = function (_React$Component) {
     _inherits(RadioButton, _React$Component);
 
-    function RadioButton() {
+    function RadioButton(props) {
         _classCallCheck(this, RadioButton);
 
-        return _possibleConstructorReturn(this, (RadioButton.__proto__ || Object.getPrototypeOf(RadioButton)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (RadioButton.__proto__ || Object.getPrototypeOf(RadioButton)).call(this, props));
+        // this.state = { checked: !!this.props.checked };
     }
 
     _createClass(RadioButton, [{
@@ -29727,7 +29728,7 @@ var RadioButton = exports.RadioButton = function (_React$Component) {
                 _react2.default.createElement(
                     'label',
                     { className: 'form-check-label' },
-                    checked ? _react2.default.createElement('input', { type: 'radio', name: name, value: value, className: 'form-check-input', checked: true }) : _react2.default.createElement('input', { type: 'radio', name: name, value: value, className: 'form-check-input' }),
+                    _react2.default.createElement('input', { type: 'radio', name: name, value: value, className: 'form-check-input', defaultChecked: !!checked }),
                     label
                 )
             );
@@ -29873,7 +29874,7 @@ var Checkbox = exports.Checkbox = function (_React$Component) {
             var textboxValue = this.props.textboxValue;
             var checked = this.props.checked;
 
-            var textbox = this.props.textbox && this.state.checked ? _react2.default.createElement('input', { type: 'text', className: 'form-control check-textbox', value: textboxValue, name: name + '-textbox', placeholder: 'comma-seperated values' }) : null;
+            var textbox = this.props.textbox && this.state.checked ? _react2.default.createElement('input', { type: 'text', className: 'form-control check-textbox', defaultValue: textboxValue, name: name + '-textbox', placeholder: 'comma-seperated values' }) : null;
 
             return _react2.default.createElement(
                 'div',
@@ -29881,7 +29882,7 @@ var Checkbox = exports.Checkbox = function (_React$Component) {
                 _react2.default.createElement(
                     'label',
                     { className: 'form-check-label' },
-                    checked ? _react2.default.createElement('input', { className: 'form-check-input control-checkbox', type: 'checkbox', name: name, onChange: this.toggleTextbox, value: value, checked: true }) : _react2.default.createElement('input', { className: 'form-check-input control-checkbox', type: 'checkbox', name: name, onChange: this.toggleTextbox, value: value }),
+                    _react2.default.createElement('input', { className: 'form-check-input control-checkbox', type: 'checkbox', name: name, onChange: this.toggleTextbox, value: value, defaultChecked: !!checked }),
                     label
                 ),
                 textbox
@@ -29943,7 +29944,7 @@ var TextInput = exports.TextInput = function (_React$Component) {
                     null,
                     label
                 ),
-                _react2.default.createElement('input', { type: 'text', name: name, value: value, className: 'form-control', placeholder: placeholder || '' })
+                _react2.default.createElement('input', { type: 'text', name: name, defaultValue: value, className: 'form-control', placeholder: placeholder || '' })
             );
         }
     }]);

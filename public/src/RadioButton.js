@@ -1,6 +1,10 @@
 import React from 'react';
 
 export class RadioButton extends React.Component {
+    constructor (props) {
+        super(props);
+        // this.state = { checked: !!this.props.checked };
+    }
     render () {
         const value = this.props.value;
         const label = this.props.label;
@@ -9,10 +13,7 @@ export class RadioButton extends React.Component {
         return (
             <div>
                 <label className="form-check-label">
-                    { checked
-                        ? <input type='radio' name={name} value={value} className='form-check-input' checked/>
-                        : <input type='radio' name={name} value={value} className='form-check-input'/>
-                    }
+                    <input type='radio' name={name} value={value} className='form-check-input' defaultChecked={!!checked}/>
                     {label}
                 </label>
             </div>

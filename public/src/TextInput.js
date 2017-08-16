@@ -10,7 +10,7 @@ export class TextInput extends React.Component {
         return (
             <div className='form-group'>
                 <label>{label}</label>
-                <input type='text' name={name} value={value} className='form-control' placeholder={ placeholder || ''}/>
+                <input type='text' name={name} defaultValue={value} className='form-control' placeholder={ placeholder || ''}/>
             </div>
         );
     }

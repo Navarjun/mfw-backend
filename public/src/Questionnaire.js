@@ -118,18 +118,18 @@ export class Questionnaire extends React.Component {
                             { label: 'Drawing' },
                             { label: 'Print' },
                             { label: 'Marker' },
+                            { label: 'Collage' },
                             { label: 'Crayola' },
                             { label: 'Kids Drawing' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* CONTAINS */}
                         <CheckboxGroup label='This poster contains:' values={this.data.mContains} name='mContains' options={[
-                            { label: 'Text only' },
-                            { label: 'Text and illustration' },
-                            { label: 'Text and photography' },
+                            { label: 'Text' },
+                            { label: 'Illustration' },
+                            { label: 'Photography' },
                             { label: 'Collage' },
-                            { label: 'images only' },
-                            { label: 'illustration only' },
+                            { label: 'Drawing' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Notes for Artifact */}
@@ -154,6 +154,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Decorative' },
                             { label: 'Sans serif' },
                             { label: 'Serif' },
+                            { label: 'Hand-written' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Notes for Image and Text */}

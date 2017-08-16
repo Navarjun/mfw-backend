@@ -19,17 +19,13 @@ export class Checkbox extends React.Component {
         const checked = this.props.checked;
 
         const textbox = (this.props.textbox && this.state.checked)
-            ? <input type='text' className='form-control check-textbox' value={textboxValue} name={name + '-textbox'} placeholder='comma-seperated values'></input>
+            ? <input type='text' className='form-control check-textbox' defaultValue={textboxValue} name={name + '-textbox'} placeholder='comma-seperated values'></input>
             : null;
 
         return (
             <div className='form-check'>
                 <label className='form-check-label'>
-                    { checked
-                        ? <input className='form-check-input control-checkbox' type='checkbox' name={name} onChange={this.toggleTextbox} value={value} checked/>
-                        : <input className='form-check-input control-checkbox' type='checkbox' name={name} onChange={this.toggleTextbox} value={value}/>
-                    }
-
+                    <input className='form-check-input control-checkbox' type='checkbox' name={name} onChange={this.toggleTextbox} value={value} defaultChecked={!!checked}/>
                     {label}
                 </label>
                 {textbox}
