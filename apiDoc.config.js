@@ -1,8 +1,5 @@
-const process = require('process');
-const baseURL = process.env.NODE_ENV === 'production' ? 'http://mfw-data-interface.herokuapp.com/api/v1' : 'http://localhost:3000/api/v1';
-
 const config = {
-    baseURL: baseURL,
+    baseURL: '/api/v1',
     requests: [
         {
             id: 'one',
