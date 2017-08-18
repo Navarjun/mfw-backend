@@ -1,0 +1,32 @@
+html
+    head
+        title Women's March | Docs
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="/stylesheets/autoDocs.css"/>
+    body
+        div.container
+            h1 Women's March API docs
+            p Base URL:
+                span#baseURL #{baseURL}
+            div#accordion
+                each request in requests
+                    div.card
+                        div.card-header(role='tab')
+                            h5.mb-0
+                                a(data-toggle='collapse', href='#'+request.id) #{request.method} #{request.url}
+                        div.collapse.show(id=request.id, role='tabpanel', data-parent='#accordion')
+                            div.card-body
+                                form(data-method=request.method, data-action=request.url)
+                                    each val, key in request.params
+                                        p #{key} (optional: #{val.optional}, default: #{val.default})
+                                            input.form-control(type='text', name=key, placeholder=val.type)
+                                    div.response
+                                        h5 Response
+                                        pre.response
+                                    button.btn.btn-outline-primary(type='submit') Submit
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+        script(src='/dist/autoDocs.js')

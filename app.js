@@ -29,6 +29,12 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/api/v1', apiV1);
 
+// Documentation
+const autoDocs = require('./autoDocs');
+const docConfig = require('./apiDoc.config.js');
+console.log(docConfig);
+app.use('/api/v1/docs', autoDocs(docConfig));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

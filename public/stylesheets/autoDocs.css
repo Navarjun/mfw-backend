@@ -1,0 +1,10 @@
+div.response {
+    display: none;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+div.response.active {
+    display: block;
+}
