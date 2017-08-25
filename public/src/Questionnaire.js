@@ -121,6 +121,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Collage' },
                             { label: 'Crayola' },
                             { label: 'Kids Drawing' },
+                            { label: 'Paint' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* CONTAINS */}
@@ -206,6 +207,8 @@ export class Questionnaire extends React.Component {
                             { label: 'War' },
                             { label: 'Women’s rights' },
                             { label: 'Trump' },
+                            { label: 'Resistance' },
+                            { label: 'Health Care' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Tone */}

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/images', function (req, res) {
     const queryString = req.query || {};
-    console.log(req.query);
+    // console.log(req.query);
 
     const limit = queryString.limit;
     const skip = queryString.skip;
