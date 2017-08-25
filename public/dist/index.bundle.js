@@ -29919,13 +29919,13 @@ var CheckboxGroup = exports.CheckboxGroup = function (_React$Component) {
                     });
                 }
                 if (d.label.toLowerCase() === 'other') {
-                    if (values.length > 0) {
+                    if (values && values.length > 0) {
                         checked = true;
                     } else {
                         checked = false;
                     }
                 }
-                return _react2.default.createElement(_Checkbox.Checkbox, { value: d.label.toLowerCase(), label: d.label, name: name, textbox: d.textbox, textboxValue: values.join(', '), checked: checked });
+                return _react2.default.createElement(_Checkbox.Checkbox, { value: d.label.toLowerCase(), label: d.label, name: name, textbox: d.textbox, textboxValue: values ? values.join(',') : '', checked: checked });
             }) : '';
             return _react2.default.createElement(
                 'div',

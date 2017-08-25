@@ -16,6 +16,7 @@ html
                                 a(data-toggle='collapse', href='#'+request.id) #{request.method} #{request.url}
                         div.collapse.show(id=request.id, role='tabpanel', data-parent='#accordion')
                             div.card-body
+                                p.lead= request.notes
                                 form(data-method=request.method, data-action=request.url)
                                     each val, key in request.params
                                         p #{key} (optional: #{val.optional}, default: #{val.default})
@@ -23,10 +24,10 @@ html
                                                 input.form-control(type='text', name=key, placeholder=val.type, data-stringify='true')
                                             else
                                                 input.form-control(type='text', name=key, placeholder=val.type)
+                                    button.btn.btn-outline-primary(type='submit') Submit
                                     div.response
                                         h5 Response
                                         pre.response
-                                    button.btn.btn-outline-primary(type='submit') Submit
         
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

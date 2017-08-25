@@ -18,7 +18,12 @@ obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
     }
 
     const query = ImageModel.find(params).sort({ 'filename': 1 });
-    // query.select('-_id filename colors properties logos text hasManualData');
+
+    if (searchQuery.select) {
+        query.select('-_id filename ' + searchQuery.select);
+    } else {
+        query.select('-_id');
+    }
     query.limit(+limit);
     query.skip(+skip);
 
