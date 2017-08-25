@@ -12,9 +12,20 @@ forms.forEach(form => {
             if (input.value !== '') {
                 const name = input.getAttribute('name');
                 if (url.indexOf(`:${name}`) !== -1) {
+                    // to replace URL params
+                    // http://mfw---.com/:filename
+                    // http://mfw---.com/img_00345.jpg
                     url = url.replace(`:${name}`, input.value);
                 } else {
-                    obj[name] = input.value;
+                    if (input.dataset.stringify === 'true') {
+                        try {
+                            obj[name] = JSON.stringify(JSON.parse(input.value));
+                        } catch (e) {
+                            alert('params object is a correct JSON represented string');
+                        }
+                    } else {
+                        obj[name] = input.value;
+                    }
                 }
             }
         });

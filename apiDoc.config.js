@@ -7,7 +7,8 @@ const config = {
             url: '/images',
             params: {
                 skip: { type: 'Number', optional: true, default: 0 },
-                limit: { type: 'Number', optional: true, default: 100 }
+                limit: { type: 'Number', optional: true, default: 100 },
+                params: { type: 'Object', optional: true, stringify: true }
             },
             notes: ''
         },

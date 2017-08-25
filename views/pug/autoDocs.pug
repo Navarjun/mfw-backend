@@ -19,7 +19,10 @@ html
                                 form(data-method=request.method, data-action=request.url)
                                     each val, key in request.params
                                         p #{key} (optional: #{val.optional}, default: #{val.default})
-                                            input.form-control(type='text', name=key, placeholder=val.type)
+                                            if val.stringify === true
+                                                input.form-control(type='text', name=key, placeholder=val.type, data-stringify='true')
+                                            else
+                                                input.form-control(type='text', name=key, placeholder=val.type)
                                     div.response
                                         h5 Response
                                         pre.response
