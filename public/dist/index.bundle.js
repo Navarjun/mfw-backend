@@ -26705,7 +26705,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         _reactDom2.default.render(_react2.default.createElement(_Explorer.ExplorerLayout, { images: data, tagged: urlParams.tagged === 'true', loadMore: loadImages }), document.querySelector('body'));
     }
 
-    var searchQuery = urlParams.tagged === 'true' ? { 'hasManualData': true } : { ne: 'hasManualData' };
+    var searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({ 'hasManualData': true }) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };
     function loadImages(skip, callback) {
         loadImages.query.skip = skip;
         (0, _d.json)('/api/v1/images' + jsonToQueryString(loadImages.query), function (err, images) {

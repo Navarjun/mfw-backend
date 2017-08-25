@@ -8,15 +8,16 @@ const obj = {};
 obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
     if (!limit) { limit = 100; }
     if (!skip) { skip = 0; }
-
-    if (searchQuery.ne) {
-        const columns = searchQuery.ne.split(',');
-        columns.forEach(d => {
-            searchQuery[d] = { $exists: false };
-        });
-        delete searchQuery.ne;
+    let params = {};
+    if (searchQuery.params) {
+        try {
+            params = JSON.parse(searchQuery.params)
+        } catch (e) {
+            console.log(e);
+        }
     }
-    const query = ImageModel.find(searchQuery).sort({ 'filename': 1 });
+
+    const query = ImageModel.find(params).sort({ 'filename': 1 });
     // query.select('-_id filename colors properties logos text hasManualData');
     query.limit(+limit);
     query.skip(+skip);

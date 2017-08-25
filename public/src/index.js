@@ -27,7 +27,7 @@ import {json} from 'd3';
         ReactDOM.render(<Explorer images={data} tagged={urlParams.tagged === 'true'} loadMore={loadImages}/>, document.querySelector('body'));
     }
 
-    let searchQuery = urlParams.tagged === 'true' ? { 'hasManualData': true } : { ne: 'hasManualData' };
+    let searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({'hasManualData': true}) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };
     function loadImages (skip, callback) {
         loadImages.query.skip = skip;
         json('/api/v1/images' + jsonToQueryString(loadImages.query), (err, images) => {
