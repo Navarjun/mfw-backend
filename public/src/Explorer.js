@@ -31,7 +31,10 @@ export class ExplorerLayout extends React.Component {
             if (err) {
                 window.alert('error loading more images');
             }
-            this.setState({ images: this.state.images.concat(images) });
+            if (images.data.length === 0) {
+                window.alert('That\'s it!');
+            }
+            this.setState({ images: this.state.images.concat(images.data) });
         });
     }
 

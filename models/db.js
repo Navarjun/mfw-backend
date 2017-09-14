@@ -18,16 +18,31 @@ obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
     }
 
     const query = ImageModel.find(params).sort({ 'filename': 1 });
+    const countQuery = ImageModel.find(params).sort({ 'filename': 1 });
 
     if (searchQuery.select) {
         query.select('-_id filename ' + searchQuery.select);
+        countQuery.select('-_id filename ' + searchQuery.select);
     } else {
         query.select('-_id');
+        countQuery.select('-_id');
     }
     query.limit(+limit);
     query.skip(+skip);
 
-    query.exec(callback);
+    query.exec(function (err, data) {
+        if (err) {
+            callback({description: 'DB Error'}, null)
+            return
+        }
+        countQuery.count().exec(function (err, count) {
+            if (err) {
+                callback({description: 'DB Error'}, null)
+                return
+            }
+            callback(null, { data: data, total: count })
+        });
+    });
 };
 
 obj.getImage = function (filename, callback) {

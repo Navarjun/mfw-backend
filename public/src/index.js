@@ -24,7 +24,7 @@ import {json} from 'd3';
 
     // My code
     function renderPage (data) {
-        ReactDOM.render(<Explorer images={data} tagged={urlParams.tagged === 'true'} loadMore={loadImages}/>, document.querySelector('body'));
+        ReactDOM.render(<Explorer images={data.data} tagged={urlParams.tagged === 'true'} loadMore={loadImages}/>, document.querySelector('body'));
     }
 
     let searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({'hasManualData': true}) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };

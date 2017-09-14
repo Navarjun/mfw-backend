@@ -26702,7 +26702,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     // My code
     function renderPage(data) {
-        _reactDom2.default.render(_react2.default.createElement(_Explorer.ExplorerLayout, { images: data, tagged: urlParams.tagged === 'true', loadMore: loadImages }), document.querySelector('body'));
+        _reactDom2.default.render(_react2.default.createElement(_Explorer.ExplorerLayout, { images: data.data, tagged: urlParams.tagged === 'true', loadMore: loadImages }), document.querySelector('body'));
     }
 
     var searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({ 'hasManualData': true }) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };
@@ -26802,7 +26802,10 @@ var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
                 if (err) {
                     window.alert('error loading more images');
                 }
-                _this2.setState({ images: _this2.state.images.concat(images) });
+                if (images.data.length === 0) {
+                    window.alert('That\'s it!');
+                }
+                _this2.setState({ images: _this2.state.images.concat(images.data) });
             });
         }
     }, {

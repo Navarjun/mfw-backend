@@ -11,13 +11,13 @@ router.get('/images', function (req, res) {
     delete queryString.limit;
     delete queryString.skip;
 
-    db.getImages(limit, skip, queryString, (err, docs) => {
+    db.getImages(limit, skip, queryString, (err, data) => {
         if (err) {
             console.log(err);
             res.send(400);
             return;
         }
-        res.send(docs);
+        res.send(data);
     });
 });
 
