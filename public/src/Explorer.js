@@ -1,7 +1,6 @@
 import React from 'react';
 import {Navbar} from './Navbar';
 import {Questionnaire} from './Questionnaire';
-import {json} from 'd3';
 
 export class ExplorerLayout extends React.Component {
     constructor (props) {
@@ -56,8 +55,11 @@ export class ExplorerLayout extends React.Component {
 
     render () {
         const images = (this.state.images || []).map(d => {
+            let style = { position: 'absolute' };
+            const span = d.hasManualData ? <span style={style}>&#10004;</span> : '';
             return (
-                <div className={d.hasManualData ? 'done' : ''}>
+                <div>
+                    {span}
                     <img onClick={this.selectImage} data-filename={d.filename} src={getImageUrl(d.filename)}/>
                 </div>
             );
