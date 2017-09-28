@@ -133,6 +133,7 @@ button {
     align-items: center;
     justify-content: center;
     background: white;
+    z-index: 99;
 }
 .popup > img {
     max-height: 100%;
