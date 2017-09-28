@@ -9906,6 +9906,9 @@ var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
                         return d.filename === _this3.state.selectedImage.filename;
                     })[0];
                     image.hasManualData = true;
+                    for (var key in obj) {
+                        image[key] = obj[key];
+                    }
                     _this3.setState({ selectedImage: null });
                 }
             }, false);

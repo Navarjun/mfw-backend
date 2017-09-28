@@ -47,6 +47,9 @@ export class ExplorerLayout extends React.Component {
                 const images = this.state.images;
                 const image = images.filter(d => d.filename === this.state.selectedImage.filename)[0];
                 image.hasManualData = true;
+                for (var key in obj) {
+                    image[key] = obj[key];
+                }
                 this.setState({ selectedImage: null });
             }
         }, false);
