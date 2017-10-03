@@ -209,6 +209,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Trump' },
                             { label: 'Resistance' },
                             { label: 'Health Care' },
+                            { label: 'Wealth inequality' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Tone */}
