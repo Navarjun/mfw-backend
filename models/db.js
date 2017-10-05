@@ -5,9 +5,9 @@ const ImageModel = mongoose.model('image', schemas.image);
 
 const obj = {};
 
-obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
-    if (!limit) { limit = 100; }
-    if (!skip) { skip = 0; }
+obj.getImages = function (pageSize = 100, pageNumber = 0, searchQuery, callback = null) {
+    if (!pageSize) { pageSize = 100; }
+    if (!pageNumber) { pageNumber = 0; }
     let params = {};
     if (searchQuery.params) {
         try {
@@ -27,8 +27,8 @@ obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
         query.select('-_id');
         countQuery.select('-_id');
     }
-    query.limit(+limit);
-    query.skip(+skip);
+    query.limit(+pageSize);
+    query.skip(pageSize * pageNumber);
 
     query.exec(function (err, data) {
         if (err) {
@@ -40,7 +40,7 @@ obj.getImages = function (limit = 100, skip = 0, searchQuery, callback = null) {
                 callback({description: 'DB Error'}, null)
                 return
             }
-            callback(null, { data: data, total: count })
+            callback(null, { data: data, total: count, pageNumber: pageNumber, pageSize: pageSize, totalPages: Math.ceil(count / pageSize) })
         });
     });
 };

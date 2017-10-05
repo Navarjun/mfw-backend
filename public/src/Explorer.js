@@ -2,10 +2,18 @@ import React from 'react';
 import {Navbar} from './Navbar';
 import {Questionnaire} from './Questionnaire';
 
+const ALL_IMAGES_IN_DB = 5966; // HARD CODED
 export class ExplorerLayout extends React.Component {
+    
     constructor (props) {
         super(props);
-        this.state = { images: this.props.images };
+        this.state = {
+            images: this.props.images,
+            totalImagesForQuery: +this.props.totalImagesForQuery,
+            pageNumber: +this.props.pageNumber,
+            pageSize: +this.props.pageSize,
+            totalPages: +this.props.totalPages
+        };
         this.selectImage = this.selectImage.bind(this);
         this.loadMore = this.loadMore.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -90,7 +98,11 @@ export class ExplorerLayout extends React.Component {
                                 {images}
                             </div>
                             <div>
-                                <button className='btn btn-secondary full-width' onClick={this.loadMore}>Load More</button>
+                                {
+                                    this.state.images.length >= this.state.totalImagesForQuery
+                                        ? <button className='btn btn-secondary full-width' onClick={this.loadMore} disabled={true}>Load More (Showing: {+this.state.images.length }/{this.state.totalImagesForQuery}) </button>
+                                        : <button className='btn btn-secondary full-width' onClick={this.loadMore}>Load More (Showing: {+this.state.images.length }/{this.state.totalImagesForQuery}) </button>
+                                }
                             </div>
                         </div>
                         {questionnaireDiv}

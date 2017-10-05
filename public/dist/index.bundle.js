@@ -9786,12 +9786,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     // My code
     function renderPage(data) {
-        _reactDom2.default.render(_react2.default.createElement(_Explorer.ExplorerLayout, { images: data.data, tagged: urlParams.tagged === 'true', loadMore: loadImages }), document.querySelector('body'));
+        _reactDom2.default.render(_react2.default.createElement(_Explorer.ExplorerLayout, { images: data.data, totalImagesForQuery: data.total, pageNumber: data.pageNumber, pageSize: data.pageSize, totalPages: data.totalPages, tagged: urlParams.tagged === 'true', loadMore: loadImages }), document.querySelector('body'));
     }
 
     var searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({ 'hasManualData': true }) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };
-    function loadImages(skip, callback) {
-        loadImages.query.skip = skip;
+    var pageSize = 100;
+    function loadImages(totalLoadedImages, callback) {
+        loadImages.query.pageNumber = parseInt(totalLoadedImages / pageSize);
         (0, _d.json)('/api/v1/images' + jsonToQueryString(loadImages.query), function (err, images) {
             if (err) {
                 console.log(err);
@@ -9802,6 +9803,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         });
     }
     loadImages.query = searchQuery;
+    loadImages.query.pageSize = pageSize;
 
     loadImages(0, function (err, images) {
         if (err) {
@@ -9842,6 +9844,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var ALL_IMAGES_IN_DB = 5966; // HARD CODED
+
 var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
     _inherits(ExplorerLayout, _React$Component);
 
@@ -9850,7 +9854,13 @@ var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (ExplorerLayout.__proto__ || Object.getPrototypeOf(ExplorerLayout)).call(this, props));
 
-        _this.state = { images: _this.props.images };
+        _this.state = {
+            images: _this.props.images,
+            totalImagesForQuery: +_this.props.totalImagesForQuery,
+            pageNumber: +_this.props.pageNumber,
+            pageSize: +_this.props.pageSize,
+            totalPages: +_this.props.totalPages
+        };
         _this.selectImage = _this.selectImage.bind(_this);
         _this.loadMore = _this.loadMore.bind(_this);
         _this.cancel = _this.cancel.bind(_this);
@@ -9972,10 +9982,22 @@ var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
                             _react2.default.createElement(
                                 'div',
                                 null,
-                                _react2.default.createElement(
+                                this.state.images.length >= this.state.totalImagesForQuery ? _react2.default.createElement(
+                                    'button',
+                                    { className: 'btn btn-secondary full-width', onClick: this.loadMore, disabled: true },
+                                    'Load More (Showing: ',
+                                    +this.state.images.length,
+                                    '/',
+                                    this.state.totalImagesForQuery,
+                                    ') '
+                                ) : _react2.default.createElement(
                                     'button',
                                     { className: 'btn btn-secondary full-width', onClick: this.loadMore },
-                                    'Load More'
+                                    'Load More (Showing: ',
+                                    +this.state.images.length,
+                                    '/',
+                                    this.state.totalImagesForQuery,
+                                    ') '
                                 )
                             )
                         ),
@@ -12750,7 +12772,7 @@ var Questionnaire = exports.Questionnaire = function (_React$Component) {
                     _react2.default.createElement(
                         'section',
                         { className: this.state.selectedSection === 2 ? '' : 'hide', id: 'questionnaire-intent' },
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the concern?', values: this.data.mConcern, name: 'mConcern', options: [{ label: 'Abortion' }, { label: 'Bernie Sanders' }, { label: 'Black lives matter' }, { label: 'Children' }, { label: 'Civil rights' }, { label: 'Climate' }, { label: 'Hillary Clinton' }, { label: 'Dreamers' }, { label: 'Earth' }, { label: 'Election' }, { label: 'Environment' }, { label: 'Feminism' }, { label: 'Gender equality' }, { label: 'Guns' }, { label: 'Hate' }, { label: 'History' }, { label: 'Immigration' }, { label: 'Indigenous' }, { label: 'Institutions/supreme court/political parties' }, { label: 'Islam' }, { label: 'Labor' }, { label: 'Latino/a/x' }, { label: 'LGBTQ' }, { label: 'Love' }, { label: 'Migrant rights' }, { label: 'Obama nostalgia' }, { label: 'Police brutality' }, { label: 'Prisons' }, { label: 'Putin' }, { label: 'Race' }, { label: 'Refugees' }, { label: 'Religion' }, { label: 'Reproductive rights' }, { label: 'Science' }, { label: 'Trans rights' }, { label: 'Uterus' }, { label: 'War' }, { label: 'Women’s rights' }, { label: 'Trump' }, { label: 'Resistance' }, { label: 'Health Care' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the concern?', values: this.data.mConcern, name: 'mConcern', options: [{ label: 'Abortion' }, { label: 'Bernie Sanders' }, { label: 'Black lives matter' }, { label: 'Children' }, { label: 'Civil rights' }, { label: 'Climate' }, { label: 'Hillary Clinton' }, { label: 'Dreamers' }, { label: 'Earth' }, { label: 'Election' }, { label: 'Environment' }, { label: 'Feminism' }, { label: 'Gender equality' }, { label: 'Guns' }, { label: 'Hate' }, { label: 'History' }, { label: 'Immigration' }, { label: 'Indigenous' }, { label: 'Institutions/supreme court/political parties' }, { label: 'Islam' }, { label: 'Labor' }, { label: 'Latino/a/x' }, { label: 'LGBTQ' }, { label: 'Love' }, { label: 'Migrant rights' }, { label: 'Obama nostalgia' }, { label: 'Police brutality' }, { label: 'Prisons' }, { label: 'Putin' }, { label: 'Race' }, { label: 'Refugees' }, { label: 'Religion' }, { label: 'Reproductive rights' }, { label: 'Science' }, { label: 'Trans rights' }, { label: 'Uterus' }, { label: 'War' }, { label: 'Women’s rights' }, { label: 'Trump' }, { label: 'Resistance' }, { label: 'Health Care' }, { label: 'Wealth inequality' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the tone?', values: this.data.mTone, name: 'mTone', options: [{ label: 'Assertive' }, { label: 'Humor' }, { label: 'Rage' }, { label: 'Fear' }, { label: 'Meta (comment on sign or protest, e.g. "I make the best signs")' }, { label: 'Loving' }, { label: 'Insults' }, { label: 'Indignation' }, { label: 'Determined' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the cultural context?', values: this.data.mCulturalContext, name: 'mCulturalContext', options: [{ label: 'Popular memes (viral content like LOL cats)' }, { label: 'Internet (tweets, tech jargon (e.g. Alt R+ del))' }, { label: 'Pop culture (e.g. Princess Leah, song lyrics, etc)' }, { label: 'Things Trump said' }, { label: 'Famous protest slogan (e.g. We shall overcome, Black Lives Matter)' }, { label: 'Historic reference (e.g. Witch hunts, founding fathers, slavery, etc.)?' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mAdditionalTheme', value: this.data.mAdditionalTheme, label: 'Which additional theme (meme) would you group it under?' }),

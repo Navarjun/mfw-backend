@@ -24,12 +24,13 @@ import {json} from 'd3';
 
     // My code
     function renderPage (data) {
-        ReactDOM.render(<Explorer images={data.data} tagged={urlParams.tagged === 'true'} loadMore={loadImages}/>, document.querySelector('body'));
+        ReactDOM.render(<Explorer images={data.data} totalImagesForQuery={data.total} pageNumber={data.pageNumber} pageSize={data.pageSize} totalPages={data.totalPages} tagged={urlParams.tagged === 'true'} loadMore={loadImages}/>, document.querySelector('body'));
     }
 
     let searchQuery = urlParams.tagged === 'true' ? { params: JSON.stringify({'hasManualData': true}) } : { params: JSON.stringify({ hasManualData: { $exists: false } }) };
-    function loadImages (skip, callback) {
-        loadImages.query.skip = skip;
+    let pageSize = 100;
+    function loadImages (totalLoadedImages, callback) {
+        loadImages.query.pageNumber = parseInt(totalLoadedImages / pageSize);
         json('/api/v1/images' + jsonToQueryString(loadImages.query), (err, images) => {
             if (err) {
                 console.log(err);
@@ -40,6 +41,7 @@ import {json} from 'd3';
         });
     }
     loadImages.query = searchQuery;
+    loadImages.query.pageSize = pageSize;
 
     loadImages(0, (err, images) => {
         if (err) {
