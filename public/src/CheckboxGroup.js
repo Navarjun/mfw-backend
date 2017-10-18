@@ -9,11 +9,12 @@ export class CheckboxGroup extends React.Component {
 
         const options = this.props.options ? this.props.options.map(d => {
             let checked = false;
-            if (values && values.includes(d.label.toLowerCase())) {
+            if (values && values.includes(d.value ? d.value.toLowerCase() : d.label.toLowerCase())) {
+                const matchedValue = d.value ? d.value.toLowerCase() : d.label.toLowerCase()
                 checked = true;
-                values = values.filter(e => e !== d.label.toLowerCase());
+                values = values.filter(e => e !== matchedValue);
             }
-            if (d.label.toLowerCase() === 'other') {
+            if (!checked && d.label.toLowerCase() === 'other') {
                 if (values && values.length > 0) {
                     checked = true;
                 } else {

@@ -13031,13 +13031,14 @@ var CheckboxGroup = exports.CheckboxGroup = function (_React$Component) {
 
             var options = this.props.options ? this.props.options.map(function (d) {
                 var checked = false;
-                if (values && values.includes(d.label.toLowerCase())) {
+                if (values && values.includes(d.value ? d.value.toLowerCase() : d.label.toLowerCase())) {
+                    var matchedValue = d.value ? d.value.toLowerCase() : d.label.toLowerCase();
                     checked = true;
                     values = values.filter(function (e) {
-                        return e !== d.label.toLowerCase();
+                        return e !== matchedValue;
                     });
                 }
-                if (d.label.toLowerCase() === 'other') {
+                if (!checked && d.label.toLowerCase() === 'other') {
                     if (values && values.length > 0) {
                         checked = true;
                     } else {
