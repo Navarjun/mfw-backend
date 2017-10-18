@@ -5,7 +5,7 @@ export class CheckboxGroup extends React.Component {
     render () {
         const label = this.props.label;
         const name = this.props.name;
-        let values = this.props.values;
+        let values = this.props.values ? this.props.values.map(d => d.toLowerCase()) : [];
 
         const options = this.props.options ? this.props.options.map(d => {
             let checked = false;
@@ -20,7 +20,8 @@ export class CheckboxGroup extends React.Component {
                     checked = false;
                 }
             }
-            return <Checkbox value={d.label.toLowerCase()} label={d.label} name={name} textbox={d.textbox} textboxValue={values ? values.join(',') : ''} checked={checked}/>;
+            let value = d.value || d.label.toLowerCase();
+            return <Checkbox value={value} label={d.label} name={name} textbox={d.textbox} textboxValue={values ? values.join(',') : ''} checked={checked}/>;
         }) : '';
         return (
             <div className='form-group'>

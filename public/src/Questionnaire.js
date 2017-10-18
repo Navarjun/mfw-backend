@@ -218,7 +218,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Humor' },
                             { label: 'Rage' },
                             { label: 'Fear' },
-                            { label: 'Meta (comment on sign or protest, e.g. "I make the best signs")' },
+                            { label: 'Meta (comment on sign or protest, e.g. "I make the best signs")', value: 'meta' },
                             { label: 'Loving' },
                             { label: 'Insults' },
                             { label: 'Indignation' },
@@ -227,12 +227,12 @@ export class Questionnaire extends React.Component {
                         ]}/>
                         {/* Cultural Context */}
                         <CheckboxGroup label='What is the cultural context?' values={this.data.mCulturalContext} name='mCulturalContext' options={[
-                            { label: 'Popular memes (viral content like LOL cats)' },
-                            { label: 'Internet (tweets, tech jargon (e.g. Alt R+ del))' },
-                            { label: 'Pop culture (e.g. Princess Leah, song lyrics, etc)' },
+                            { label: 'Popular memes (viral content like LOL cats)', value: 'popular memes' },
+                            { label: 'Internet (tweets, tech jargon (e.g. Alt R+ del))', value: 'internet' },
+                            { label: 'Pop culture (e.g. Princess Leah, song lyrics, etc)', value: 'pop culture' },
                             { label: 'Things Trump said' },
-                            { label: 'Famous protest slogan (e.g. We shall overcome, Black Lives Matter)' },
-                            { label: 'Historic reference (e.g. Witch hunts, founding fathers, slavery, etc.)?' },
+                            { label: 'Famous protest slogan (e.g. We shall overcome, Black Lives Matter)', value: 'famous protest slogan' },
+                            { label: 'Historic reference (e.g. Witch hunts, founding fathers, slavery, etc.)?', value: 'historic reference' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Additional Theme */}

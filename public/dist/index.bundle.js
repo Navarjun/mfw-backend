@@ -12773,8 +12773,8 @@ var Questionnaire = exports.Questionnaire = function (_React$Component) {
                         'section',
                         { className: this.state.selectedSection === 2 ? '' : 'hide', id: 'questionnaire-intent' },
                         _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the concern?', values: this.data.mConcern, name: 'mConcern', options: [{ label: 'Abortion' }, { label: 'Bernie Sanders' }, { label: 'Black lives matter' }, { label: 'Children' }, { label: 'Civil rights' }, { label: 'Climate' }, { label: 'Hillary Clinton' }, { label: 'Dreamers' }, { label: 'Earth' }, { label: 'Election' }, { label: 'Environment' }, { label: 'Feminism' }, { label: 'Gender equality' }, { label: 'Guns' }, { label: 'Hate' }, { label: 'History' }, { label: 'Immigration' }, { label: 'Indigenous' }, { label: 'Institutions/supreme court/political parties' }, { label: 'Islam' }, { label: 'Labor' }, { label: 'Latino/a/x' }, { label: 'LGBTQ' }, { label: 'Love' }, { label: 'Migrant rights' }, { label: 'Obama nostalgia' }, { label: 'Police brutality' }, { label: 'Prisons' }, { label: 'Putin' }, { label: 'Race' }, { label: 'Refugees' }, { label: 'Religion' }, { label: 'Reproductive rights' }, { label: 'Science' }, { label: 'Trans rights' }, { label: 'Uterus' }, { label: 'War' }, { label: 'Women’s rights' }, { label: 'Trump' }, { label: 'Resistance' }, { label: 'Health Care' }, { label: 'Wealth inequality' }, { label: 'Other', textbox: true }] }),
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the tone?', values: this.data.mTone, name: 'mTone', options: [{ label: 'Assertive' }, { label: 'Humor' }, { label: 'Rage' }, { label: 'Fear' }, { label: 'Meta (comment on sign or protest, e.g. "I make the best signs")' }, { label: 'Loving' }, { label: 'Insults' }, { label: 'Indignation' }, { label: 'Determined' }, { label: 'Other', textbox: true }] }),
-                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the cultural context?', values: this.data.mCulturalContext, name: 'mCulturalContext', options: [{ label: 'Popular memes (viral content like LOL cats)' }, { label: 'Internet (tweets, tech jargon (e.g. Alt R+ del))' }, { label: 'Pop culture (e.g. Princess Leah, song lyrics, etc)' }, { label: 'Things Trump said' }, { label: 'Famous protest slogan (e.g. We shall overcome, Black Lives Matter)' }, { label: 'Historic reference (e.g. Witch hunts, founding fathers, slavery, etc.)?' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the tone?', values: this.data.mTone, name: 'mTone', options: [{ label: 'Assertive' }, { label: 'Humor' }, { label: 'Rage' }, { label: 'Fear' }, { label: 'Meta (comment on sign or protest, e.g. "I make the best signs")', value: 'meta' }, { label: 'Loving' }, { label: 'Insults' }, { label: 'Indignation' }, { label: 'Determined' }, { label: 'Other', textbox: true }] }),
+                        _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the cultural context?', values: this.data.mCulturalContext, name: 'mCulturalContext', options: [{ label: 'Popular memes (viral content like LOL cats)', value: 'popular memes' }, { label: 'Internet (tweets, tech jargon (e.g. Alt R+ del))', value: 'internet' }, { label: 'Pop culture (e.g. Princess Leah, song lyrics, etc)', value: 'pop culture' }, { label: 'Things Trump said' }, { label: 'Famous protest slogan (e.g. We shall overcome, Black Lives Matter)', value: 'famous protest slogan' }, { label: 'Historic reference (e.g. Witch hunts, founding fathers, slavery, etc.)?', value: 'historic reference' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mAdditionalTheme', value: this.data.mAdditionalTheme, label: 'Which additional theme (meme) would you group it under?' }),
                         _react2.default.createElement(_CheckboxGroup.CheckboxGroup, { label: 'What is the strategy?', values: this.data.mStrategy, name: 'mStrategy', options: [{ label: 'Demand' }, { label: 'Complaint' }, { label: 'Encouragement' }, { label: 'Solidarity' }, { label: 'Call to action' }, { label: 'Other', textbox: true }] }),
                         _react2.default.createElement(_TextInput.TextInput, { name: 'mSigned', value: this.data.mSigned, label: 'Is the poster signed, or is the creator identified? If so, please enter the name:' }),
@@ -13025,7 +13025,9 @@ var CheckboxGroup = exports.CheckboxGroup = function (_React$Component) {
         value: function render() {
             var label = this.props.label;
             var name = this.props.name;
-            var values = this.props.values;
+            var values = this.props.values ? this.props.values.map(function (d) {
+                return d.toLowerCase();
+            }) : [];
 
             var options = this.props.options ? this.props.options.map(function (d) {
                 var checked = false;
@@ -13042,7 +13044,8 @@ var CheckboxGroup = exports.CheckboxGroup = function (_React$Component) {
                         checked = false;
                     }
                 }
-                return _react2.default.createElement(_Checkbox.Checkbox, { value: d.label.toLowerCase(), label: d.label, name: name, textbox: d.textbox, textboxValue: values ? values.join(',') : '', checked: checked });
+                var value = d.value || d.label.toLowerCase();
+                return _react2.default.createElement(_Checkbox.Checkbox, { value: value, label: d.label, name: name, textbox: d.textbox, textboxValue: values ? values.join(',') : '', checked: checked });
             }) : '';
             return _react2.default.createElement(
                 'div',

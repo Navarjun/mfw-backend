@@ -31,7 +31,7 @@ const Image = new Schema({
     mSigned: String, // signed by who?
     mNotesIntent: String,
     // Additional
-    mAdditionalKeywords: [String], // Comma separated
+    mAdditionalKeywords: String, // Comma separated
     mAdditionalNotes: String,
     hasManualData: { type: Boolean, default: false }
 });
