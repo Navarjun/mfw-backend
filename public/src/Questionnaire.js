@@ -93,8 +93,7 @@ export class Questionnaire extends React.Component {
                         {/* BACKSIDE OF THE POSTER */}
                         <RadioGroup name='mBackside' value={this.data.mBackside} label='Is it backside of the poster?' options={[
                             { label: 'Yes' },
-                            { label: 'No' },
-                            { label: 'Maybe' }
+                            { label: 'No' }
                         ]}></RadioGroup>
 
                         {/* ROTATED */}
@@ -105,9 +104,7 @@ export class Questionnaire extends React.Component {
 
                         {/* CONDITION */}
                         <CheckboxGroup label='In what condition is the poster?' values={this.data.mCondition} name='mCondition' options={[
-                            { label: 'Mint' },
                             { label: 'Good' },
-                            { label: 'Poor' },
                             { label: 'Folded' },
                             { label: 'Torn' },
                             { label: 'Stained' },
@@ -134,7 +131,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Notes for Artifact */}
-                        <TextInput name='mNotesArtifact' value={this.data.mNotesArtifact} label='Notes for Section 1'/>
+                        <TextInput name='mNotesArtifact' value={this.data.mNotesArtifact} label='Notes for Section 1 (only if necessary)'/>
                         <div className='flex-edges'>
                             <button className='btn btn-outline-danger' onClick={this.cancel}>Cancel</button>
                             <button className='btn btn-outline-primary' onClick={this.next} data-index={0}>Next</button>
@@ -168,7 +165,6 @@ export class Questionnaire extends React.Component {
                     {/* ----------SECTION 3---------- */}
                     <section className={this.state.selectedSection === 2 ? '' : 'hide'} id='questionnaire-intent'>
                         <CheckboxGroup label='What is the concern?' values={this.data.mConcern} name='mConcern' options={[
-                            { label: 'Abortion' },
                             { label: 'Bernie Sanders' },
                             { label: 'Black lives matter' },
                             { label: 'Children' },
@@ -185,15 +181,15 @@ export class Questionnaire extends React.Component {
                             { label: 'Hate' },
                             { label: 'History' },
                             { label: 'Immigration' },
-                            { label: 'Indigenous' },
+                            { label: 'Indigenous Rights', value: 'Indigenous' },
                             { label: 'Institutions/supreme court/political parties' },
                             { label: 'Islam' },
                             { label: 'Labor' },
                             { label: 'Latino/a/x' },
-                            { label: 'LGBTQ' },
+                            { label: 'LGBTQ Rights', value: 'LGBTQ' },
                             { label: 'Love' },
                             { label: 'Migrant rights' },
-                            { label: 'Obama nostalgia' },
+                            { label: 'Obama' },
                             { label: 'Police brutality' },
                             { label: 'Prisons' },
                             { label: 'Putin' },
@@ -202,8 +198,6 @@ export class Questionnaire extends React.Component {
                             { label: 'Religion' },
                             { label: 'Reproductive rights' },
                             { label: 'Science' },
-                            { label: 'Trans rights' },
-                            { label: 'Uterus' },
                             { label: 'War' },
                             { label: 'Women’s rights' },
                             { label: 'Trump' },
@@ -222,7 +216,6 @@ export class Questionnaire extends React.Component {
                             { label: 'Loving' },
                             { label: 'Insults' },
                             { label: 'Indignation' },
-                            { label: 'Determined' },
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Cultural Context */}
@@ -236,7 +229,7 @@ export class Questionnaire extends React.Component {
                             { label: 'Other', textbox: true }
                         ]}/>
                         {/* Additional Theme */}
-                        <TextInput name='mAdditionalTheme' value={this.data.mAdditionalTheme} label='Which additional theme (meme) would you group it under?'/>
+                        <TextInput name='mAdditionalTheme' value={this.data.mAdditionalTheme} label='Which additional theme (meme) would you group it under? (only if necessary)'/>
                         {/* Strategy */}
                         <CheckboxGroup label='What is the strategy?' values={this.data.mStrategy} name='mStrategy' options={[
                             { label: 'Demand' },
