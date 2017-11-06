@@ -51,8 +51,17 @@ obj.getImage = function (filename, callback) {
 };
 
 obj.addMetadata = function (filename, data, callback) {
-    console.log(filename, data);
     ImageModel.findOneAndUpdate({filename: filename}, {$set: data}, callback);
 };
+
+obj.aggregate = function (array, callback) {
+    ImageModel.aggregate(array, function(err, data) {
+        if (err) {
+            callback({description: 'DB Error'}, null)
+            return
+        }
+        callback(null, {data: data})
+    });
+}
 
 module.exports = obj;

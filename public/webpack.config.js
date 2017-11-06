@@ -2,10 +2,12 @@
 // https://webpack.github.io/docs/configuration.html
 const webpack = require('webpack');
 const path = require('path');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 module.exports = {
     entry: {
-        index: './src/index.js'
+        index: './src/index.js',
+        interface: './src/interface/interface.js'
     },
     output: {
         path: path.join(__dirname, '/dist'),
@@ -44,5 +46,6 @@ module.exports = {
             $: 'jquery',
             jquery: 'jquery'
         })
+        // ,new MinifyPlugin()
     ]
 };

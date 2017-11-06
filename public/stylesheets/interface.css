@@ -1,0 +1,33 @@
+body {
+    background: #222;
+    color: white;
+}
+.list-group-module {
+    height: 33.33%;
+    overflow: hidden;
+}
+.list-unstyled {
+    padding-left: 10px;
+    overflow: scroll;
+    height: 100%;
+}
+.list-unstyled li .number {
+    color: #555;
+    font-size: 0.8em;
+}
+
+.explorer {
+    display: flex;
+    align-content: flex-start;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+.explorer-image {
+    width: 300px;
+    height: auto;
+    vertical-align: top;
+    padding: 10px;
+}

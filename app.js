@@ -40,6 +40,10 @@ const autoDocs = require('./autoDocs');
 const docConfig = require('./apiDoc.config.js');
 app.use('/api/v1/docs', autoDocs(docConfig));
 
+// Research interface
+const researchInterface = require('./routes/researchInterface');
+app.use('/interface', researchInterface);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

@@ -34,6 +34,23 @@ router.get('/image/:id', function (req, res) {
     });
 });
 
+router.get('/aggregate', function(req, res) {
+    const data = req.body;
+    try {
+        const query = JSON.parse(req.query.query);
+        db.aggregate(query, (err, data) => {
+            if (err) {
+                console.log(err);
+                res.send(400);
+                return;
+            }
+            res.send(data);
+        });
+    } catch (e) {
+        res.send({code: 500, errorDescription: 'Most probably problem with the JSON format of your query'});
+    }
+});
+
 router.post('/image/:id', function (req, res) {
     const id = req.params.id;
     const data = req.body;
