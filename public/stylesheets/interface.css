@@ -1,9 +1,7 @@
 body {
-    background: #222;
-    color: white;
+    /* background: #222; */
 }
 .list-group-module {
-    height: 33.33%;
     overflow: hidden;
 }
 .list-unstyled {
@@ -14,6 +12,22 @@ body {
 .list-unstyled li .number {
     color: #555;
     font-size: 0.8em;
+}
+
+.list {
+    display: flex;
+    align-content: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.list > li {
+    width: 30%;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.list > li:hover {
+    background: #888;
 }
 
 .explorer {
@@ -30,4 +44,13 @@ body {
     height: auto;
     vertical-align: top;
     padding: 10px;
+}
+
+#filter-list {
+    position: absolute;
+}
+
+#explorer {
+    background: #222;
+    height: calc(100% - 112px);
 }

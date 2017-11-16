@@ -2,19 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {ListGroup} from './ListGroup';
 import {Explorer} from './Explorer';
+import {Navbar} from './Navbar';
+import { FilterBar } from './FilterBar';
 
 ReactDOM.render(
     <div>
-        <div className='lists'>
-            <ListGroup colNames={[
-                {name: 'Concerns', key: 'mConcern'},
-                {name: 'Strategies', key: 'mStrategy'},
-                {name: 'Contains', key: 'mContains'}
-            ]}/>
+        <Navbar/>
+        <FilterBar/>
+        <div className='container-fluid'>
         </div>
-        <div className='explorer'>
+        {/* <div className='explorer'>
             <Explorer/>
-        </div>
+        </div> */}
     </div>,
     document.getElementById('root')
 );
