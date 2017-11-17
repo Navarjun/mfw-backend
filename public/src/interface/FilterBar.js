@@ -2,12 +2,17 @@ import React from 'react';
 import {Motion, spring} from 'react-motion';
 import {Explorer} from './Explorer';
 import {List} from './List';
+import * as _ from 'lodash';
 
 export class FilterBar extends React.Component {
     constructor (props) {
         super(props);
-        this.state = {filterVisible: false};
+        this.state = {filterVisible: false,
+            activeFilters: [
+                // {key: mConcerns, values: []}
+            ]};
         this.filterClicked = this.filterClicked.bind(this);
+        this.filterValues = this.filterValues.bind(this);
     }
 
     filterClicked (e) {
@@ -18,16 +23,31 @@ export class FilterBar extends React.Component {
         this.setState({filterVisible: e.target.dataset.colname});
     }
 
+    filterValues (value) {
+        const activeFilters = _.cloneDeep(this.state.activeFilters);
+        let paramFilter = activeFilters.filter(d => d.key === this.state.filterVisible);
+        if (paramFilter.length === 0) {
+            paramFilter = {key: this.state.filterVisible, values: []};
+            activeFilters.push(paramFilter);
+        } else {
+            paramFilter = paramFilter[0];
+        }
+        const index = paramFilter.values.indexOf(value);
+        if (index === -1) {
+            paramFilter.values.push(value);
+        } else {
+            paramFilter.values.splice(index, 1);
+        }
+        this.setState({activeFilters: activeFilters});
+    }
+
     render () {
         const filterList = this.state.filterVisible
-            ? (
-                <Motion defaultStyle={{opacity: 0}} style={{opacity: spring(1)}}>
-                    { interpolationFn => <div style={interpolationFn} className='container-fluid' id='filter-list'>
-                        <div className='row bg-light' style={{height: '200px'}}>
-                            <List colKey={this.state.filterVisible} name=''></List>
-                        </div>
-                    </div>}
-                </Motion>)
+            ? (<div className='container-fluid' id='filter-list'>
+                <div className='row bg-light' style={{height: '200px'}}>
+                    <List colKey={this.state.filterVisible} selectedValues={this.state.activeFilters.filter(d => d.key === this.state.filterVisible)[0]} filterClicked={this.filterValues}></List>
+                </div>
+            </div>)
             : null;
 
         return (
@@ -55,14 +75,14 @@ export class FilterBar extends React.Component {
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
                             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */
+                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </div>
                     </div>
                 </div>
                 {filterList}
                 <div className='container-fluid' id='explorer'>
                     <div className='row'>
-                        <Explorer></Explorer>
+                        <Explorer filterData={this.state.activeFilters}></Explorer>
                     </div>
                 </div>
             </div>

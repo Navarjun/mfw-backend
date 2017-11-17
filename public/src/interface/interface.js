@@ -9,11 +9,6 @@ ReactDOM.render(
     <div>
         <Navbar/>
         <FilterBar/>
-        <div className='container-fluid'>
-        </div>
-        {/* <div className='explorer'>
-            <Explorer/>
-        </div> */}
     </div>,
     document.getElementById('root')
 );

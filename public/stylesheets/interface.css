@@ -30,6 +30,10 @@ body {
     background: #888;
 }
 
+.selected-filter-value > span.filter-value {
+    text-decoration: underline;
+}
+
 .explorer {
     display: flex;
     align-content: flex-start;

@@ -10,7 +10,7 @@ export class List extends React.Component {
         this.filterClicked = this.filterClicked.bind(this);
     }
 
-    componentWillReceiveProps () {
+    componentWillMount () {
         const query = [
             {$unwind: '$' + this.props.colKey},
             {$group: {
@@ -30,20 +30,21 @@ export class List extends React.Component {
 
     filterClicked (e) {
         e.preventDefault();
-        console.log('filterClicked', e.target.dataset);
-        if (e.target.dataset.value) {
-            console.log('in if');
+        if (e.target.dataset.value && this.props.filterClicked) {
+            this.props.filterClicked(e.target.dataset.value);
         }
     }
 
     render () {
+        const selectedValuesSet = new Set(this.props.selectedValues && this.props.selectedValues.values ? this.props.selectedValues.values : []);
         const list = <div>
             {/* <h4>{this.props.name}</h4> */}
             <ul className='list-unstyled list'>
                 {this.state.data.map((d, i) => {
-                    return <li key={i}>
-                        <span className='lead' onClick={this.filterClicked} data-value={d._id}>{d._id}</span>
-                        <span className='number'>({d.count})</span>
+                    const selected = selectedValuesSet.has(d._id) ? 'selected-filter-value' : '';
+                    return <li key={i} className={selected} onClick={this.filterClicked} data-value={d._id}>
+                        <span className='filter-value' data-value={d._id}>{d._id}</span>
+                        <span className='number' data-value={d._id}>({d.count})</span>
                     </li>;
                 })}
             </ul>

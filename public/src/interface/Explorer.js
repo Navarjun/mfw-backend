@@ -7,17 +7,33 @@ export class Explorer extends React.Component {
         super(props);
         this.state = {
             data: []
-        }
+        };
     }
 
-    componentDidMount () {
+    componentWillMount () {
         json('/api/v1/images', (err, data) => {
             if (err) {
                 console.log(err);
             }
-            console.log(data);
             this.setState({data: data.data});
         });
+    }
+
+    componentWillReceiveProps () {
+        if (this.props.filterData && this.props.filterData.length > 0) {
+            const filterData = this.props.filterData.map(d => {
+                var x = {};
+                x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
+                return {$match: x};
+            });
+            json('/api/v1/aggregate?query=' + JSON.stringify(filterData), (err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                this.setState({data: data.data});
+            });
+        }
+        // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
     }
 
     render () {
