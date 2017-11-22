@@ -52,5 +52,5 @@ export class Explorer extends React.Component {
 }
 
 function getImageUrl (filename) {
-    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename;
+    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename.replace('.JPG', '.jpg');
 }
