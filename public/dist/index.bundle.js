@@ -39606,7 +39606,7 @@ var ExplorerLayout = exports.ExplorerLayout = function (_React$Component) {
 }(_react2.default.Component);
 
 function getImageUrl(filename) {
-    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename;
+    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename.replace('.JPG', '.jpg');
 }
 
 /***/ }),

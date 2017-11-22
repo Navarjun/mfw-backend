@@ -4,7 +4,6 @@ import {Questionnaire} from './Questionnaire';
 
 const ALL_IMAGES_IN_DB = 5966; // HARD CODED
 export class ExplorerLayout extends React.Component {
-    
     constructor (props) {
         super(props);
         this.state = {
@@ -114,5 +113,5 @@ export class ExplorerLayout extends React.Component {
 }
 
 function getImageUrl (filename) {
-    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename;
+    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename.replace('.JPG', '.jpg');
 }
