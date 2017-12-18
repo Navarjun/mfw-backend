@@ -86,14 +86,14 @@ export class FilterBar extends React.Component {
             {key: 'mContains', display: 'Contains'}
         ];
 
-        const filterButtons = filters.map(filter => {
+        const filterButtons = filters.map((filter, i) => {
             // filter active values
             // for particular column
             const activeFilters = this.state.activeFilters.filter(d => d.key === filter.key);
             const active = this.state.activeFilters
                 ? (activeFilters.length > 0 ? activeFilters[0].values : []) // if no values return an empty array
                 : [];
-            return <li>
+            return <li key={i}>
                 <FilterButton values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
             </li>;
         });

@@ -18,18 +18,16 @@ export class FilterButton extends React.Component {
     filterClicked (e) {
         e.preventDefault();
         if (e.currentTarget.dataset.value && e.currentTarget.dataset.value !== '') {
-            console.log(e.currentTarget.dataset.value);
             this.props.onClick(this.props.colName, e.currentTarget.dataset.value);
         }
     }
 
     render () {
-        console.log(this.props.active);
-        const button = <button className='filter-button' style={{width: '150px'}} onClick={this.toggleDropdown}>{this.props.children}</button>;
+        const button = <button className='filter-button' onClick={this.toggleDropdown}>{this.props.children}</button>;
         const values = this.props.values.map((d, i) => {
             const classNames = this.props.active.includes(d._id) ? 'filter-button-li active' : 'filter-button-li';
             return <li className={classNames} key={i} data-value={d._id} onClick={this.filterClicked}>
-                <span>{d._id}</span><span>{d.count}</span>
+                <span>{d._id}</span><span className="filter-count">({d.count})</span>
             </li>;
         });
         return <div>

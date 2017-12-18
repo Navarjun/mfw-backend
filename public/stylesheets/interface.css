@@ -65,6 +65,8 @@ body {
     border: none;
     text-align: left;
     border-bottom: black solid 1px;
+    margin: 8px;
+    margin-bottom: 0px;
 }
 .filter-button:focus {
     outline: none;
@@ -72,19 +74,30 @@ body {
 .filter-button-li {
     background: white;
     list-style: none;
-    border-bottom: 1px solid #D8D8D8;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
     margin: 0;
     padding: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     transition: background 0.2s;
     display: flex;
     justify-content: space-between;
     width: 150px;
     cursor: pointer;
+    margin-left: 8px;
 }
 .filter-button-li:hover {
     background: #888;
 }
+.filter-button-li > * {
+    max-width: 100px;
+    overflow-x: auto;
+    word-wrap: break-word;
+    font-size: 0.9em;
+}
 .filter-button-li.active {
     background: #888;
+}
+.filter-count {
+    font-size: 0.8em;
+    color: #888;
 }

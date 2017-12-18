@@ -50424,7 +50424,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
 
             var filters = [{ key: 'mConcern', display: 'Concern' }, { key: 'mStrategy', display: 'Strategy' }, { key: 'mContains', display: 'Contains' }];
 
-            var filterButtons = filters.map(function (filter) {
+            var filterButtons = filters.map(function (filter, i) {
                 // filter active values
                 // for particular column
                 var activeFilters = _this3.state.activeFilters.filter(function (d) {
@@ -50434,7 +50434,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                 [];
                 return _react2.default.createElement(
                     'li',
-                    null,
+                    { key: i },
                     _react2.default.createElement(
                         _FilterButton.FilterButton,
                         { values: _this3.state[filter.key + 'Count'], active: active, colName: filter.key, onClick: _this3.filterValueClicked },
@@ -54075,7 +54075,6 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
         value: function filterClicked(e) {
             e.preventDefault();
             if (e.currentTarget.dataset.value && e.currentTarget.dataset.value !== '') {
-                console.log(e.currentTarget.dataset.value);
                 this.props.onClick(this.props.colName, e.currentTarget.dataset.value);
             }
         }
@@ -54084,10 +54083,9 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            console.log(this.props.active);
             var button = _react2.default.createElement(
                 'button',
-                { className: 'filter-button', style: { width: '150px' }, onClick: this.toggleDropdown },
+                { className: 'filter-button', onClick: this.toggleDropdown },
                 this.props.children
             );
             var values = this.props.values.map(function (d, i) {
@@ -54102,8 +54100,10 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'span',
-                        null,
-                        d.count
+                        { className: 'filter-count' },
+                        '(',
+                        d.count,
+                        ')'
                     )
                 );
             });
