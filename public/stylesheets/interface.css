@@ -58,3 +58,33 @@ body {
     background: #222;
     height: calc(100% - 112px);
 }
+
+.filter-button {
+    width: 150px;
+    background: none;
+    border: none;
+    text-align: left;
+    border-bottom: black solid 1px;
+}
+.filter-button:focus {
+    outline: none;
+}
+.filter-button-li {
+    background: white;
+    list-style: none;
+    border-bottom: 1px solid #D8D8D8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
+    margin: 0;
+    padding: 5px;
+    transition: background 0.2s;
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    cursor: pointer;
+}
+.filter-button-li:hover {
+    background: #888;
+}
+.filter-button-li.active {
+    background: #888;
+}

@@ -2,32 +2,69 @@ import React from 'react';
 import {Motion, spring} from 'react-motion';
 import {Explorer} from './Explorer';
 import {List} from './List';
+import {FilterButton} from './FilterButton';
 import * as _ from 'lodash';
+import {json} from 'd3';
 
 export class FilterBar extends React.Component {
     constructor (props) {
         super(props);
-        this.state = {filterVisible: false,
+        this.state = {
             activeFilters: [
-                // {key: mConcerns, values: []}
-            ]};
-        this.filterClicked = this.filterClicked.bind(this);
+                // {key: 'mConcern', values: []}
+            ],
+            mConcernCount: [],
+            mStrategyCount: [],
+            mContainsCount: []
+        };
+        this.filterValueClicked = this.filterValueClicked.bind(this);
         this.filterValues = this.filterValues.bind(this);
+        this.getFilteredCounts = this.getFilteredCounts.bind(this);
+        this.updateFilters = this.updateFilters.bind(this);
     }
 
-    filterClicked (e) {
-        if (this.state.filterVisible && this.state.filterVisible === e.target.dataset.colname) {
-            this.setState({filterVisible: false});
-            return;
+    componentWillMount () {
+        this.updateFilters();
+    }
+
+    updateFilters () {
+        this.getFilteredCounts('mConcern');
+        this.getFilteredCounts('mStrategy');
+        this.getFilteredCounts('mContains');
+    }
+
+    getFilteredCounts (colName) {
+        const query = [
+            {$unwind: '$' + colName},
+            {$group: {
+                _id: '$' + colName,
+                count: {$sum: 1}
+            }},
+            { $sort: {count: -1} }
+        ];
+
+        json('/api/v1/aggregate?query=' + JSON.stringify(query), (err, data) => {
+            if (err) {
+                console.log(err);
+            }
+            const obj = {};
+            obj[colName + 'Count'] = data.data;
+            this.setState(obj);
+        });
+    }
+
+    filterValueClicked (colName, value) {
+        if (colName && value) {
+            this.filterValues(colName, value);
         }
-        this.setState({filterVisible: e.target.dataset.colname});
     }
 
-    filterValues (value) {
+    filterValues (colName, value) {
+        // Maintains list of active filters for the gallery
         const activeFilters = _.cloneDeep(this.state.activeFilters);
-        let paramFilter = activeFilters.filter(d => d.key === this.state.filterVisible);
+        let paramFilter = activeFilters.filter(d => d.key === colName);
         if (paramFilter.length === 0) {
-            paramFilter = {key: this.state.filterVisible, values: []};
+            paramFilter = {key: colName, values: []};
             activeFilters.push(paramFilter);
         } else {
             paramFilter = paramFilter[0];
@@ -39,17 +76,27 @@ export class FilterBar extends React.Component {
             paramFilter.values.splice(index, 1);
         }
         this.setState({activeFilters: activeFilters});
+        this.updateFilters();
     }
 
     render () {
-        const filterList = this.state.filterVisible
-            ? (<div className='container-fluid' id='filter-list'>
-                <div className='row bg-light' style={{height: '200px'}}>
-                    <List colKey={this.state.filterVisible} selectedValues={this.state.activeFilters.filter(d => d.key === this.state.filterVisible)[0]} filterClicked={this.filterValues}></List>
-                </div>
-            </div>)
-            : null;
+        const filters = [
+            {key: 'mConcern', display: 'Concern'},
+            {key: 'mStrategy', display: 'Strategy'},
+            {key: 'mContains', display: 'Contains'}
+        ];
 
+        const filterButtons = filters.map(filter => {
+            // filter active values
+            // for particular column
+            const activeFilters = this.state.activeFilters.filter(d => d.key === filter.key);
+            const active = this.state.activeFilters
+                ? (activeFilters.length > 0 ? activeFilters[0].values : []) // if no values return an empty array
+                : [];
+            return <li>
+                <FilterButton values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
+            </li>;
+        });
         return (
             <div>
                 <div className="navbar navbar-expand-lg navbar-light bg-light">
@@ -63,15 +110,7 @@ export class FilterBar extends React.Component {
                             <li>
                                 <a className="nav-link disabled" href="#">Refine By:</a>
                             </li>
-                            <li>
-                                <a className={this.state.filterVisible && this.state.filterVisible === 'mConcern' ? 'nav-link active' : 'nav-link'} href="#" data-colname="mConcern" onClick={this.filterClicked}>Concerns</a>
-                            </li>
-                            <li>
-                                <a className={this.state.filterVisible && this.state.filterVisible === 'mStrategy' ? 'nav-link active' : 'nav-link'} href="#" data-colname="mStrategy" onClick={this.filterClicked}>Strategies</a>
-                            </li>
-                            <li>
-                                <a className={this.state.filterVisible && this.state.filterVisible === 'mContains' ? 'nav-link active' : 'nav-link'} href="#" data-colname="mContains" onClick={this.filterClicked}>Contains</a>
-                            </li>
+                            {filterButtons}
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
                             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -79,7 +118,7 @@ export class FilterBar extends React.Component {
                         </div>
                     </div>
                 </div>
-                {filterList}
+                {/* {filterList} */}
                 <div className='container-fluid' id='explorer'>
                     <div className='row'>
                         <Explorer filterData={this.state.activeFilters}></Explorer>
