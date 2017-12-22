@@ -65,4 +65,20 @@ router.post('/image/:id', function (req, res) {
     });
 });
 
+router.get('/search', function(req, res) {
+    const searchString = req.query.query;
+    if (!searchString) {
+        res.send(400);
+        return
+    }
+    db.search(searchString, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.send(400);
+            return;
+        }
+        res.send(data);
+    })
+});
+
 module.exports = router;

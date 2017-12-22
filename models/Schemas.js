@@ -33,7 +33,8 @@ const Image = new Schema({
     // Additional
     mAdditionalKeywords: String, // Comma separated
     mAdditionalNotes: String,
-    hasManualData: { type: Boolean, default: false }
+    hasManualData: { type: Boolean, default: false },
+    searchText: String
 });
 
 module.exports = {

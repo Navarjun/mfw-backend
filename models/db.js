@@ -64,4 +64,18 @@ obj.aggregate = function (array, callback) {
     });
 }
 
+obj.search = function(searchString, callback) {
+    ImageModel.aggregate([
+        { $match: { $text: { $search: searchString } } },
+        { $sort: { score: { $meta: "textScore" } } },
+        { $project: { _id: 0 } }
+    ], function (err, data) {
+        if (err) {
+            callback({description: 'DB Error'}, null)
+            return
+        }
+        callback(null, {data: data})
+    })
+}
+
 module.exports = obj;
