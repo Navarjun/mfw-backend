@@ -20,7 +20,16 @@ export class Explorer extends React.Component {
     }
 
     componentWillReceiveProps () {
-        if (this.props.filterData && this.props.filterData.length > 0) {
+        if (this.props.searchString && this.props.searchString !== '') {
+            json('/api/v1/search?query=' + this.props.searchString, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(data);
+                this.setState({data: data.data});
+            });
+        } else if (this.props.filterData && this.props.filterData.length > 0) {
             const filterData = this.props.filterData.map(d => {
                 var x = {};
                 x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
@@ -29,6 +38,7 @@ export class Explorer extends React.Component {
             json('/api/v1/aggregate?query=' + JSON.stringify(filterData), (err, data) => {
                 if (err) {
                     console.log(err);
+                    return;
                 }
                 this.setState({data: data.data});
             });

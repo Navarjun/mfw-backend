@@ -41183,7 +41183,16 @@ var Explorer = exports.Explorer = function (_React$Component) {
         value: function componentWillReceiveProps() {
             var _this3 = this;
 
-            if (this.props.filterData && this.props.filterData.length > 0) {
+            if (this.props.searchString && this.props.searchString !== '') {
+                (0, _d.json)('/api/v1/search?query=' + this.props.searchString, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log(data);
+                    _this3.setState({ data: data.data });
+                });
+            } else if (this.props.filterData && this.props.filterData.length > 0) {
                 var filterData = this.props.filterData.map(function (d) {
                     var x = {};
                     x[d.key] = { $regex: d.values.join('|'), $options: 'i' };
@@ -41192,6 +41201,7 @@ var Explorer = exports.Explorer = function (_React$Component) {
                 (0, _d.json)('/api/v1/aggregate?query=' + JSON.stringify(filterData), function (err, data) {
                     if (err) {
                         console.log(err);
+                        return;
                     }
                     _this3.setState({ data: data.data });
                 });
@@ -50353,6 +50363,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
         _this.filterValues = _this.filterValues.bind(_this);
         _this.getFilteredCounts = _this.getFilteredCounts.bind(_this);
         _this.updateFilters = _this.updateFilters.bind(_this);
+        _this.search = _this.search.bind(_this);
         return _this;
     }
 
@@ -50414,8 +50425,15 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
             } else {
                 paramFilter.values.splice(index, 1);
             }
-            this.setState({ activeFilters: activeFilters });
+            this.setState({ activeFilters: activeFilters, searchString: undefined });
             this.updateFilters();
+        }
+    }, {
+        key: 'search',
+        value: function search(e) {
+            if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
+                this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+            }
         }
     }, {
         key: 'render',
@@ -50473,10 +50491,10 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'form-inline my-2 my-lg-0' },
-                            _react2.default.createElement('input', { className: 'form-control mr-sm-2', type: 'search', placeholder: 'Search', 'aria-label': 'Search' }),
+                            _react2.default.createElement('input', { className: 'form-control mr-sm-2', id: 'search-field', type: 'search', placeholder: 'Search', 'aria-label': 'Search' }),
                             _react2.default.createElement(
                                 'button',
-                                { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit' },
+                                { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit', onClick: this.search },
                                 'Search'
                             )
                         )
@@ -50488,7 +50506,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'row' },
-                        _react2.default.createElement(_Explorer.Explorer, { filterData: this.state.activeFilters })
+                        _react2.default.createElement(_Explorer.Explorer, { filterData: this.state.activeFilters, searchString: this.state.searchString })
                     )
                 )
             );

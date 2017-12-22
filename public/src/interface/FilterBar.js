@@ -21,6 +21,7 @@ export class FilterBar extends React.Component {
         this.filterValues = this.filterValues.bind(this);
         this.getFilteredCounts = this.getFilteredCounts.bind(this);
         this.updateFilters = this.updateFilters.bind(this);
+        this.search = this.search.bind(this);
     }
 
     componentWillMount () {
@@ -75,8 +76,14 @@ export class FilterBar extends React.Component {
         } else {
             paramFilter.values.splice(index, 1);
         }
-        this.setState({activeFilters: activeFilters});
+        this.setState({activeFilters: activeFilters, searchString: undefined});
         this.updateFilters();
+    }
+
+    search (e) {
+        if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
+            this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+        }
     }
 
     render () {
@@ -113,15 +120,15 @@ export class FilterBar extends React.Component {
                             {filterButtons}
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            <input className="form-control mr-sm-2" id="search-field" type="search" placeholder="Search" aria-label="Search"/>
+                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.search}>Search</button>
                         </div>
                     </div>
                 </div>
                 {/* {filterList} */}
                 <div className='container-fluid' id='explorer'>
                     <div className='row'>
-                        <Explorer filterData={this.state.activeFilters}></Explorer>
+                        <Explorer filterData={this.state.activeFilters} searchString={this.state.searchString}></Explorer>
                     </div>
                 </div>
             </div>
