@@ -32,11 +32,13 @@ obj.getImages = function (pageSize = 100, pageNumber = 0, searchQuery, callback 
 
     query.exec(function (err, data) {
         if (err) {
+            console.log(err)
             callback({description: 'DB Error'}, null)
             return
         }
         countQuery.count().exec(function (err, count) {
             if (err) {
+                console.log(err)
                 callback({description: 'DB Error'}, null)
                 return
             }
@@ -55,6 +57,7 @@ obj.addMetadata = function (filename, data, callback) {
         {passRawResult: true} /*options*/,
         function(err, data) {
             if (err) {
+                console.log(err)
                 callback({description: 'DB Error'}, null)
                 return
             }
@@ -64,6 +67,7 @@ obj.addMetadata = function (filename, data, callback) {
                 {passRawResult: true},
                 function(err, data) {
                 if (err) {
+                    console.log(err)
                     callback({description: 'DB Error'}, null)
                     return
                 }
@@ -75,6 +79,7 @@ obj.addMetadata = function (filename, data, callback) {
 obj.aggregate = function (array, callback) {
     ImageModel.aggregate(array, function(err, data) {
         if (err) {
+            console.log(err)
             callback({description: 'DB Error'}, null)
             return
         }
@@ -89,6 +94,7 @@ obj.search = function(searchString, callback) {
         { $project: { _id: 0 } }
     ], function (err, data) {
         if (err) {
+            console.log(err)
             callback({description: 'DB Error'}, null)
             return
         }
