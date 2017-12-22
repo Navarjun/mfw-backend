@@ -51,7 +51,25 @@ obj.getImage = function (filename, callback) {
 };
 
 obj.addMetadata = function (filename, data, callback) {
-    ImageModel.findOneAndUpdate({filename: filename}, {$set: data}, callback);
+    ImageModel.findOneAndUpdate({filename: filename}, {$set: data},
+        {passRawResult: true} /*options*/,
+        function(err, data) {
+            if (err) {
+                callback({description: 'DB Error'}, null)
+                return
+            }
+            const obj = { searchText: searchStringFromObject(data) };
+            
+            ImageModel.findOneAndUpdate({filename: filename}, {$set: obj},
+                {passRawResult: true},
+                function(err, data) {
+                if (err) {
+                    callback({description: 'DB Error'}, null)
+                    return
+                }
+                callback(err, data);
+            })
+        });
 };
 
 obj.aggregate = function (array, callback) {
@@ -79,3 +97,33 @@ obj.search = function(searchString, callback) {
 }
 
 module.exports = obj;
+
+function searchStringFromObject (d) {
+    let textString = '';
+    if (d.text.length > 0) {
+        textString += d.text[0];
+    }
+
+    textString = textString + '  ' + d.mTitle + '  ' +
+        d.labels.join('  ') + '  ' +
+        d.logos.join('  ') + '  ' +
+        d.mAdditionalNotes + '  ' +
+        d.mAdditionalKeywords  + '  ' +
+        d.mNotesIntent + '  ' +
+        d.mSigned + '  ' +
+        d.mStrategy.join('  ') + '  ' +
+        d.mAdditionalTheme + '  ' +
+        d.mCulturalContext.filter(d => d !== 'Other:').join('  ') + '  ' +
+        d.mTone.join('  ') + '  ' +
+        d.mConcern.join('  ') + '  ' +
+        d.mNotesImageAndText + '  ' +
+        d.mLetteringStyle.join('  ') + '  ' +
+        d.mText + '  ' +
+        d.mShow + '  ' +
+        d.mNotesArtifact + '  ' +
+        d.mContains.join('  ') + '  ' +
+        d.mMade.join('  ') + '  ' +
+        d.mCondition.join('  ') + '  ';
+
+    return textString.trim();
+}
