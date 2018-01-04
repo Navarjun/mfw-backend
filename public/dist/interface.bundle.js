@@ -50460,12 +50460,46 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                     )
                 );
             });
+
+            var filterTabs = this.state.activeFilters.map(function (filter, i) {
+                if (filter.values.length > 0) {
+                    var classNames = 'btn btn-sm margin-right-sm';
+                    switch (filter.key) {
+                        case 'mConcern':
+                            classNames += ' btn-primary';
+                            break;
+                        case 'mStrategy':
+                            classNames += ' btn-secondary';
+                            break;
+                        case 'mContains':
+                            classNames += ' btn-warning';
+                    }
+                    return filter.values.map(function (filterVal) {
+                        return _react2.default.createElement(
+                            'li',
+                            null,
+                            _react2.default.createElement(
+                                'span',
+                                { className: classNames },
+                                filterVal,
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: 'margin-left-sm clickable hover-glow-light', 'aria-hidden': 'true' },
+                                    '\xD7'
+                                )
+                            )
+                        );
+                    });
+                }
+                return null;
+            });
+
             return _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'navbar navbar-expand-lg navbar-light bg-light' },
+                    { className: 'navbar navbar-expand-lg navbar-light bg-light', style: { zIndex: 1 } },
                     _react2.default.createElement(
                         'button',
                         { className: 'navbar-toggler', type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarSupportedContent', 'aria-controls': 'navbarSupportedContent', 'aria-expanded': 'false', 'aria-label': 'Toggle navigation' },
@@ -50498,6 +50532,15 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                                 'Search'
                             )
                         )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'navbar navbar-expand-lg bg-light' },
+                    _react2.default.createElement(
+                        'ul',
+                        { className: 'navbar-nav' },
+                        filterTabs
                     )
                 ),
                 _react2.default.createElement(

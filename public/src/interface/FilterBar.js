@@ -104,9 +104,35 @@ export class FilterBar extends React.Component {
                 <FilterButton values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
             </li>;
         });
+
+        const filterTabs = this.state.activeFilters.map((filter, i) => {
+            if (filter.values.length > 0) {
+                var classNames = 'btn btn-sm margin-right-sm';
+                switch (filter.key) {
+                case 'mConcern':
+                    classNames += ' btn-primary';
+                    break;
+                case 'mStrategy':
+                    classNames += ' btn-secondary';
+                    break;
+                case 'mContains':
+                    classNames += ' btn-warning';
+                }
+                return filter.values.map((filterVal) => {
+                    return <li>
+                        <span className={classNames}>
+                            {filterVal}
+                            <span className="margin-left-sm clickable hover-glow-light" aria-hidden="true">&times;</span>
+                        </span>
+                    </li>;
+                });
+            }
+            return null;
+        });
+
         return (
             <div>
-                <div className="navbar navbar-expand-lg navbar-light bg-light">
+                <div className="navbar navbar-expand-lg navbar-light bg-light" style={{zIndex: 1}}>
                     {/* <a className="navbar-brand" href="#">All</a> */}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -124,6 +150,11 @@ export class FilterBar extends React.Component {
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.search}>Search</button>
                         </div>
                     </div>
+                </div>
+                <div className="navbar navbar-expand-lg bg-light">
+                    <ul className="navbar-nav">
+                        {filterTabs}
+                    </ul>
                 </div>
                 {/* {filterList} */}
                 <div className='container-fluid' id='explorer'>
