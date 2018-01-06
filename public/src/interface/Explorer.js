@@ -12,6 +12,7 @@ export class Explorer extends React.Component {
             perPage: 10
         };
         this.scroll = this.scroll.bind(this);
+        this.wheel = this.wheel.bind(this);
     }
 
     componentWillMount () {
@@ -51,7 +52,7 @@ export class Explorer extends React.Component {
         // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
     }
 
-    scroll (e) {
+    wheel (e) {
         e.preventDefault();
         const ele = document.getElementById('explorer-div');
 
@@ -60,7 +61,10 @@ export class Explorer extends React.Component {
         ) {
             ele.scrollLeft += e.deltaY;
         }
+    }
 
+    scroll (e) {
+        const ele = document.getElementById('explorer-div');
         if (ele.scrollWidth - 500 < ele.scrollLeft + ele.clientWidth &&
             this.state.page < parseFloat(this.state.data.length) / this.state.perPage
         ) {
@@ -77,10 +81,10 @@ export class Explorer extends React.Component {
             </div>
             : this.state.data.slice(0, this.state.page * this.state.perPage).map((d, i) => {
                 return <div key={i}>
-                    <img className='explorer-image' src={getImageUrl(d.filename)} onWheel={null}/>
+                    <img className='explorer-image' src={getImageUrl(d.filename)} onWheel={null} onScroll={null}/>
                 </div>;
             });
-        return <div className='explorer' id='explorer-div' onWheel={this.scroll}>
+        return <div className='explorer' id='explorer-div' onWheel={this.wheel} onScroll={this.scroll}>
             {
                 child
             }

@@ -41167,6 +41167,7 @@ var Explorer = exports.Explorer = function (_React$Component) {
             perPage: 10
         };
         _this.scroll = _this.scroll.bind(_this);
+        _this.wheel = _this.wheel.bind(_this);
         return _this;
     }
 
@@ -41214,15 +41215,19 @@ var Explorer = exports.Explorer = function (_React$Component) {
             // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
         }
     }, {
-        key: 'scroll',
-        value: function scroll(e) {
+        key: 'wheel',
+        value: function wheel(e) {
             e.preventDefault();
             var ele = document.getElementById('explorer-div');
 
             if (e.deltaY > 0 && ele.scrollLeft + e.deltaY < ele.scrollWidth || e.deltaY < 0 && ele.scrollLeft + e.deltaY > 0) {
                 ele.scrollLeft += e.deltaY;
             }
-
+        }
+    }, {
+        key: 'scroll',
+        value: function scroll(e) {
+            var ele = document.getElementById('explorer-div');
             if (ele.scrollWidth - 500 < ele.scrollLeft + ele.clientWidth && this.state.page < parseFloat(this.state.data.length) / this.state.perPage) {
                 this.setState({ page: this.state.page + 1 });
             }
@@ -41240,12 +41245,12 @@ var Explorer = exports.Explorer = function (_React$Component) {
                 return _react2.default.createElement(
                     'div',
                     { key: i },
-                    _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename), onWheel: null })
+                    _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename), onWheel: null, onScroll: null })
                 );
             });
             return _react2.default.createElement(
                 'div',
-                { className: 'explorer', id: 'explorer-div', onWheel: this.scroll },
+                { className: 'explorer', id: 'explorer-div', onWheel: this.wheel, onScroll: this.scroll },
                 child
             );
         }
