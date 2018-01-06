@@ -19,6 +19,7 @@ export class FilterBar extends React.Component {
         };
         this.filterValueClicked = this.filterValueClicked.bind(this);
         this.filterValues = this.filterValues.bind(this);
+        this.removeFilter = this.removeFilter.bind(this);
         this.getFilteredCounts = this.getFilteredCounts.bind(this);
         this.updateFilters = this.updateFilters.bind(this);
         this.search = this.search.bind(this);
@@ -80,6 +81,20 @@ export class FilterBar extends React.Component {
         this.updateFilters();
     }
 
+    removeFilter (e) {
+        const colName = e.target.dataset.filterKey;
+        const value = e.target.dataset.filterValue;
+        const activeFilters = _.cloneDeep(this.state.activeFilters);
+        let paramFilter = activeFilters.filter(d => d.key === colName);
+        if (paramFilter.length === 0) {
+            return;
+        }
+        paramFilter = paramFilter[0];
+        paramFilter.values = paramFilter.values.filter(d => d !== value);
+        this.setState({activeFilters: activeFilters, searchString: undefined});
+        this.updateFilters();
+    }
+
     search (e) {
         if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
             this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
@@ -100,8 +115,19 @@ export class FilterBar extends React.Component {
             const active = this.state.activeFilters
                 ? (activeFilters.length > 0 ? activeFilters[0].values : []) // if no values return an empty array
                 : [];
+            let className = '';
+            switch (filter.key) {
+            case 'mConcern':
+                className += 'concern';
+                break;
+            case 'mStrategy':
+                className += 'strategy';
+                break;
+            case 'mContains':
+                className += 'contains';
+            }
             return <li key={i}>
-                <FilterButton values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
+                <FilterButton className={className} values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
             </li>;
         });
 
@@ -110,19 +136,19 @@ export class FilterBar extends React.Component {
                 var classNames = 'btn btn-sm margin-right-sm';
                 switch (filter.key) {
                 case 'mConcern':
-                    classNames += ' btn-primary';
+                    classNames += ' btn-concern';
                     break;
                 case 'mStrategy':
-                    classNames += ' btn-secondary';
+                    classNames += ' btn-strategy';
                     break;
                 case 'mContains':
-                    classNames += ' btn-warning';
+                    classNames += ' btn-contains';
                 }
                 return filter.values.map((filterVal) => {
                     return <li>
                         <span className={classNames}>
                             {filterVal}
-                            <span className="margin-left-sm clickable hover-glow-light" aria-hidden="true">&times;</span>
+                            <span className="margin-left-sm clickable hover-glow-light" aria-hidden="true" data-filter-key={filter.key} data-filter-value={filterVal} onClick={this.removeFilter}>&times;</span>
                         </span>
                     </li>;
                 });

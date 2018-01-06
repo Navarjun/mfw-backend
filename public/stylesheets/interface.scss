@@ -1,5 +1,19 @@
+$concern-color-light: #f99e7c;
+$concern-color: #FF7F50;
+$concern-color-dark: #d16740;
+
+$strategy-color-light: #23d1c7;
+$strategy-color: #20B2AA;
+$strategy-color-dark: #16827c;
+
+$contain-color-light: #a55015;
+$contain-color: #8B4513;
+$contain-color-dark: #6b340d;
+
 body {
-    /* background: #222; */
+    // background: #222;
+    padding: 0px;
+    margin: 0px;
 }
 .list-group-module {
     overflow: hidden;
@@ -64,9 +78,18 @@ body {
     background: none;
     border: none;
     text-align: left;
-    border-bottom: black solid 1px;
+    border-bottom: black solid 2px;
     margin: 8px;
     margin-bottom: 0px;
+    &.concern {
+      border-bottom-color: $concern-color;
+    }
+    &.strategy {
+        border-bottom-color: $strategy-color;
+    }
+    &.contains {
+        border-bottom-color: $contain-color;
+    }
 }
 .filter-button:focus {
     outline: none;
@@ -100,6 +123,34 @@ body {
 .filter-count {
     font-size: 0.8em;
     color: #888;
+}
+
+.btn-concern {
+    color: white;
+    background-color: $concern-color;
+    border-color: $concern-color-dark;
+    &:hover {
+        background-color: $concern-color-dark;
+        border-color: $concern-color;
+    }
+}
+.btn-strategy {
+    color: white;
+    background-color: $strategy-color;
+    border-color: $strategy-color-dark;
+    &:hover {
+        background-color: $strategy-color-dark;
+        border-color: $strategy-color;
+    }
+}
+.btn-contains {
+    color: white;
+    background-color: $contain-color;
+    border-color: $contain-color-dark;
+    &:hover {
+        background-color: $contain-color-dark;
+        border-color: $contain-color;
+    }
 }
 
 /* UTILITIES */

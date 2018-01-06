@@ -4,6 +4,7 @@ import {ListGroup} from './ListGroup';
 import {Explorer} from './Explorer';
 import {Navbar} from './Navbar';
 import { FilterBar } from './FilterBar';
+import '../../stylesheets/interface.scss';
 
 ReactDOM.render(
     <div>

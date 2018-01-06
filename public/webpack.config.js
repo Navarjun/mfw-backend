@@ -30,6 +30,7 @@ module.exports = {
             },
             { test: /\.json$/, loader: 'json-loader' },
             { test: /\.css$/, loader: 'style-loader!css-loader', exclude: path.join(__dirname, '/node_modules') },
+            { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader', exclude: path.join(__dirname, '/node_modules') },
             { test: /\.woff(\d+)?$/, loader: 'url?prefix=font/&limit=5000&mimetype=application/font-woff' },
             { test: /\.ttf$/, loader: 'file?prefix=font/' },
             { test: /\.eot$/, loader: 'file?prefix=font/' },
@@ -38,6 +39,7 @@ module.exports = {
             { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
             { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
             { test: require.resolve('jquery'), loader: 'expose?jQuery!expose?$' }
+
         ]
     },
     plugins: [

@@ -23,7 +23,7 @@ export class FilterButton extends React.Component {
     }
 
     render () {
-        const button = <button className='filter-button' onClick={this.toggleDropdown}>{this.props.children}</button>;
+        const button = <button className={this.props.className + ' filter-button'} onClick={this.toggleDropdown}>{this.props.children}</button>;
         const values = this.props.values.map((d, i) => {
             const classNames = this.props.active.includes(d._id) ? 'filter-button-li active' : 'filter-button-li';
             return <li className={classNames} key={i} data-value={d._id} onClick={this.filterClicked}>
