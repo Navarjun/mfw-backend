@@ -50391,6 +50391,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
         _this.getFilteredCounts = _this.getFilteredCounts.bind(_this);
         _this.updateFilters = _this.updateFilters.bind(_this);
         _this.search = _this.search.bind(_this);
+        _this.searchInputEvent = _this.searchInputEvent.bind(_this);
         return _this;
     }
 
@@ -50430,8 +50431,6 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                     });
                 });
             });
-            // this.getFilteredCounts('mStrategy');
-            // this.getFilteredCounts('mContains');
         }
     }, {
         key: 'getFilteredCounts',
@@ -50506,9 +50505,16 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
         }
     }, {
         key: 'search',
-        value: function search(e) {
+        value: function search() {
             if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
                 this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+            }
+        }
+    }, {
+        key: 'searchInputEvent',
+        value: function searchInputEvent(e) {
+            if (e.charCode === 13) {
+                this.search();
             }
         }
     }, {
@@ -50612,7 +50618,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'form-inline my-2 my-lg-0' },
-                            _react2.default.createElement('input', { className: 'form-control mr-sm-2', id: 'search-field', type: 'search', placeholder: 'Search', 'aria-label': 'Search' }),
+                            _react2.default.createElement('input', { className: 'form-control mr-sm-2', id: 'search-field', type: 'search', placeholder: 'Search', 'aria-label': 'Search', onKeyPress: this.searchInputEvent }),
                             _react2.default.createElement(
                                 'button',
                                 { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit', onClick: this.search },

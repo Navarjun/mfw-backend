@@ -23,6 +23,7 @@ export class FilterBar extends React.Component {
         this.getFilteredCounts = this.getFilteredCounts.bind(this);
         this.updateFilters = this.updateFilters.bind(this);
         this.search = this.search.bind(this);
+        this.searchInputEvent = this.searchInputEvent.bind(this);
     }
 
     componentWillMount () {
@@ -56,8 +57,6 @@ export class FilterBar extends React.Component {
                 });
             });
         });
-        // this.getFilteredCounts('mStrategy');
-        // this.getFilteredCounts('mContains');
     }
 
     getFilteredCounts (colName, callback) {
@@ -125,9 +124,15 @@ export class FilterBar extends React.Component {
         this.updateFilters();
     }
 
-    search (e) {
+    search () {
         if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
             this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+        }
+    }
+
+    searchInputEvent (e) {
+        if (e.charCode === 13) {
+            this.search();
         }
     }
 
@@ -202,7 +207,7 @@ export class FilterBar extends React.Component {
                             {filterButtons}
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" id="search-field" type="search" placeholder="Search" aria-label="Search"/>
+                            <input className="form-control mr-sm-2" id="search-field" type="search" placeholder="Search" aria-label="Search" onKeyPress={this.searchInputEvent}/>
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.search}>Search</button>
                         </div>
                     </div>
