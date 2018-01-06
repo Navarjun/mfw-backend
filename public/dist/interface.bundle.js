@@ -41162,7 +41162,9 @@ var Explorer = exports.Explorer = function (_React$Component) {
 
         _this.state = {
             data: [],
-            loading: true
+            loading: true,
+            page: 2,
+            perPage: 10
         };
         _this.scroll = _this.scroll.bind(_this);
         return _this;
@@ -41214,7 +41216,16 @@ var Explorer = exports.Explorer = function (_React$Component) {
     }, {
         key: 'scroll',
         value: function scroll(e) {
-            console.log('TODO: Scrolling');
+            e.preventDefault();
+            var ele = document.getElementById('explorer-div');
+
+            if (e.deltaY > 0 && ele.scrollLeft + e.deltaY < ele.scrollWidth || e.deltaY < 0 && ele.scrollLeft + e.deltaY > 0) {
+                ele.scrollLeft += e.deltaY;
+            }
+
+            if (ele.scrollWidth - 500 < ele.scrollLeft + ele.clientWidth && this.state.page < parseFloat(this.state.data.length) / this.state.perPage) {
+                this.setState({ page: this.state.page + 1 });
+            }
         }
     }, {
         key: 'render',
@@ -41225,16 +41236,16 @@ var Explorer = exports.Explorer = function (_React$Component) {
                 'div',
                 { style: { width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
                 _react2.default.createElement('img', { src: 'http://gifimage.net/wp-content/uploads/2017/08/loading-gif-transparent-4.gif', style: { width: '100px' } })
-            ) : this.state.data.map(function (d, i) {
+            ) : this.state.data.slice(0, this.state.page * this.state.perPage).map(function (d, i) {
                 return _react2.default.createElement(
                     'div',
                     { key: i },
-                    _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename) })
+                    _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename), onWheel: null })
                 );
             });
             return _react2.default.createElement(
                 'div',
-                { className: 'explorer', onWheel: this.scroll },
+                { className: 'explorer', id: 'explorer-div', onWheel: this.scroll },
                 child
             );
         }
