@@ -30,28 +30,58 @@ export class FilterBar extends React.Component {
     }
 
     updateFilters () {
-        this.getFilteredCounts('mConcern');
-        this.getFilteredCounts('mStrategy');
-        this.getFilteredCounts('mContains');
+        this.getFilteredCounts('mConcern', (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            const mConcernCount = data;
+            this.getFilteredCounts('mStrategy', (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                const mStrategyCount = data;
+                this.getFilteredCounts('mContains', (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    const mContainsCount = data;
+                    this.setState({
+                        mConcernCount: mConcernCount,
+                        mStrategyCount: mStrategyCount,
+                        mContainsCount: mContainsCount
+                    });
+                });
+            });
+        });
+        // this.getFilteredCounts('mStrategy');
+        // this.getFilteredCounts('mContains');
     }
 
-    getFilteredCounts (colName) {
-        const query = [
+    getFilteredCounts (colName, callback) {
+        const filterData = this.state.activeFilters.map(d => {
+            var x = {};
+            x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
+            return {$match: x};
+        });
+        const query = filterData.concat([
             {$unwind: '$' + colName},
             {$group: {
                 _id: '$' + colName,
                 count: {$sum: 1}
             }},
             { $sort: {count: -1} }
-        ];
+        ]);
 
         json('/api/v1/aggregate?query=' + JSON.stringify(query), (err, data) => {
             if (err) {
                 console.log(err);
             }
-            const obj = {};
-            obj[colName + 'Count'] = data.data;
-            this.setState(obj);
+            // const obj = {};
+            // obj[colName + 'Count'] = data.data;
+            callback(null, data.data);
         });
     }
 

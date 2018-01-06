@@ -41161,8 +41161,10 @@ var Explorer = exports.Explorer = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Explorer.__proto__ || Object.getPrototypeOf(Explorer)).call(this, props));
 
         _this.state = {
-            data: []
+            data: [],
+            loading: true
         };
+        _this.scroll = _this.scroll.bind(_this);
         return _this;
     }
 
@@ -41175,7 +41177,7 @@ var Explorer = exports.Explorer = function (_React$Component) {
                 if (err) {
                     console.log(err);
                 }
-                _this2.setState({ data: data.data });
+                _this2.setState({ data: data.data, loading: false });
             });
         }
     }, {
@@ -41184,15 +41186,16 @@ var Explorer = exports.Explorer = function (_React$Component) {
             var _this3 = this;
 
             if (this.props.searchString && this.props.searchString !== '') {
+                this.setState({ loading: true });
                 (0, _d.json)('/api/v1/search?query=' + this.props.searchString, function (err, data) {
                     if (err) {
                         console.log(err);
                         return;
                     }
-                    console.log(data);
-                    _this3.setState({ data: data.data });
+                    _this3.setState({ data: data.data, loading: false });
                 });
             } else if (this.props.filterData && this.props.filterData.length > 0) {
+                this.setState({ loading: true });
                 var filterData = this.props.filterData.map(function (d) {
                     var x = {};
                     x[d.key] = { $regex: d.values.join('|'), $options: 'i' };
@@ -41203,26 +41206,36 @@ var Explorer = exports.Explorer = function (_React$Component) {
                         console.log(err);
                         return;
                     }
-                    _this3.setState({ data: data.data });
+                    _this3.setState({ data: data.data, loading: false });
                 });
             }
             // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
+        }
+    }, {
+        key: 'scroll',
+        value: function scroll(e) {
+            console.log('TODO: Scrolling');
         }
     }, {
         key: 'render',
         value: function render() {
             // const cols = Math.floor(12 / this.props.colNames.length);
             // const lists = 
+            var child = this.state.loading ? _react2.default.createElement(
+                'div',
+                { style: { width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' } },
+                _react2.default.createElement('img', { src: 'http://gifimage.net/wp-content/uploads/2017/08/loading-gif-transparent-4.gif', style: { width: '100px' } })
+            ) : this.state.data.map(function (d, i) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: i },
+                    _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename) })
+                );
+            });
             return _react2.default.createElement(
                 'div',
-                { className: 'explorer' },
-                this.state.data.map(function (d, i) {
-                    return _react2.default.createElement(
-                        'div',
-                        { key: i },
-                        _react2.default.createElement('img', { className: 'explorer-image', src: getImageUrl(d.filename) })
-                    );
-                })
+                { className: 'explorer', onWheel: this.scroll },
+                child
             );
         }
     }]);
@@ -50378,27 +50391,57 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
     }, {
         key: 'updateFilters',
         value: function updateFilters() {
-            this.getFilteredCounts('mConcern');
-            this.getFilteredCounts('mStrategy');
-            this.getFilteredCounts('mContains');
+            var _this2 = this;
+
+            this.getFilteredCounts('mConcern', function (err, data) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                var mConcernCount = data;
+                _this2.getFilteredCounts('mStrategy', function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    var mStrategyCount = data;
+                    _this2.getFilteredCounts('mContains', function (err, data) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        var mContainsCount = data;
+                        _this2.setState({
+                            mConcernCount: mConcernCount,
+                            mStrategyCount: mStrategyCount,
+                            mContainsCount: mContainsCount
+                        });
+                    });
+                });
+            });
+            // this.getFilteredCounts('mStrategy');
+            // this.getFilteredCounts('mContains');
         }
     }, {
         key: 'getFilteredCounts',
-        value: function getFilteredCounts(colName) {
-            var _this2 = this;
-
-            var query = [{ $unwind: '$' + colName }, { $group: {
+        value: function getFilteredCounts(colName, callback) {
+            var filterData = this.state.activeFilters.map(function (d) {
+                var x = {};
+                x[d.key] = { $regex: d.values.join('|'), $options: 'i' };
+                return { $match: x };
+            });
+            var query = filterData.concat([{ $unwind: '$' + colName }, { $group: {
                     _id: '$' + colName,
                     count: { $sum: 1 }
-                } }, { $sort: { count: -1 } }];
+                } }, { $sort: { count: -1 } }]);
 
             (0, _d.json)('/api/v1/aggregate?query=' + JSON.stringify(query), function (err, data) {
                 if (err) {
                     console.log(err);
                 }
-                var obj = {};
-                obj[colName + 'Count'] = data.data;
-                _this2.setState(obj);
+                // const obj = {};
+                // obj[colName + 'Count'] = data.data;
+                callback(null, data.data);
             });
         }
     }, {

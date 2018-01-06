@@ -6,8 +6,10 @@ export class Explorer extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            loading: true
         };
+        this.scroll = this.scroll.bind(this);
     }
 
     componentWillMount () {
@@ -15,21 +17,22 @@ export class Explorer extends React.Component {
             if (err) {
                 console.log(err);
             }
-            this.setState({data: data.data});
+            this.setState({data: data.data, loading: false});
         });
     }
 
     componentWillReceiveProps () {
         if (this.props.searchString && this.props.searchString !== '') {
+            this.setState({loading: true});
             json('/api/v1/search?query=' + this.props.searchString, (err, data) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
-                console.log(data);
-                this.setState({data: data.data});
+                this.setState({data: data.data, loading: false});
             });
         } else if (this.props.filterData && this.props.filterData.length > 0) {
+            this.setState({loading: true});
             const filterData = this.props.filterData.map(d => {
                 var x = {};
                 x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
@@ -40,22 +43,31 @@ export class Explorer extends React.Component {
                     console.log(err);
                     return;
                 }
-                this.setState({data: data.data});
+                this.setState({data: data.data, loading: false});
             });
         }
         // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
     }
 
+    scroll (e) {
+        console.log('TODO: Scrolling');
+    }
+
     render () {
         // const cols = Math.floor(12 / this.props.colNames.length);
         // const lists = 
-        return <div className='explorer'>
+        const child = this.state.loading
+            ? <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <img src="http://gifimage.net/wp-content/uploads/2017/08/loading-gif-transparent-4.gif" style={{width: '100px'}}/>
+            </div>
+            : this.state.data.map((d, i) => {
+                return <div key={i}>
+                    <img className='explorer-image' src={getImageUrl(d.filename)}/>
+                </div>;
+            });
+        return <div className='explorer' onWheel={this.scroll}>
             {
-                this.state.data.map((d, i) => {
-                    return <div key={i}>
-                        <img className='explorer-image' src={getImageUrl(d.filename)}/>
-                    </div>;
-                })
+                child
             }
         </div>;
     }
