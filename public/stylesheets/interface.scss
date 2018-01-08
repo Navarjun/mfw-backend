@@ -11,7 +11,7 @@ $contain-color: #8B4513;
 $contain-color-dark: #6b340d;
 
 body {
-    // background: #222;
+    background: #f8f9fa!important;
     padding: 0px;
     margin: 0px;
 }
@@ -53,9 +53,11 @@ body {
     align-content: flex-start;
     flex-flow: column wrap;
     justify-content: flex-start;
-    height: 100%;
+    height: calc(100% - 56px - 103px);
     width: 100%;
     overflow: scroll;
+    background: #f8f9fa!important;
+    position: relative;
 }
 .explorer-image {
     width: 300px;
@@ -150,6 +152,42 @@ body {
     &:hover {
         background-color: $contain-color-dark;
         border-color: $contain-color;
+    }
+}
+
+#image-detail {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 1;
+    & > * {
+        width: 50%;
+        padding: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        img {
+            object-fit: contain;
+            max-height: 100%;
+            max-width: 100%;
+        }
+        div {
+            width: 100%;
+            .head {
+                font-weight: bold;
+            }
+            .tab {
+                padding-right: 8px;
+            }
+        }
+    }
+    .close-btn {
+        position: absolute;
+        right: 16px;
+        width: auto;
     }
 }
 

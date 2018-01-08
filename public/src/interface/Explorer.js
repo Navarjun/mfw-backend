@@ -1,6 +1,7 @@
 import React from 'react';
 import {json} from 'd3';
 import StackGrid from 'react-stack-grid';
+import {ImageDetail} from './ImageDetail';
 
 export class Explorer extends React.Component {
     constructor (props) {
@@ -8,11 +9,13 @@ export class Explorer extends React.Component {
         this.state = {
             data: [],
             loading: true,
-            page: 2,
-            perPage: 10
+            page: 3,
+            perPage: 10,
+            imageDetail: undefined
         };
         this.scroll = this.scroll.bind(this);
         this.wheel = this.wheel.bind(this);
+        this.imageDetail = this.imageDetail.bind(this);
     }
 
     componentWillMount () {
@@ -60,6 +63,14 @@ export class Explorer extends React.Component {
             (e.deltaY < 0 && ele.scrollLeft + e.deltaY > 0)
         ) {
             ele.scrollLeft += e.deltaY;
+        } else if (e.deltaY < 0 && ele.scrollLeft + e.deltaY <= 0) {
+            // margin of error
+            // if scrolling to the left very fast but already close to edge
+            // deltaY will lead to 'scrollLeft + deltaY' < 0
+            // so just take it to zero
+            ele.scrollLeft = 0;
+        } else if (e.deltaY > 0 && ele.scrollLeft + e.deltaY >= ele.scrollWidth) {
+            ele.scrollLeft = ele.scrollWidth;
         }
     }
 
@@ -72,6 +83,11 @@ export class Explorer extends React.Component {
         }
     }
 
+    imageDetail (e) {
+        e.preventDefault();
+        this.setState({imageDetail: e.target.dataset.name});
+    }
+
     render () {
         // const cols = Math.floor(12 / this.props.colNames.length);
         // const lists = 
@@ -81,13 +97,15 @@ export class Explorer extends React.Component {
             </div>
             : this.state.data.slice(0, this.state.page * this.state.perPage).map((d, i) => {
                 return <div key={i}>
-                    <img className='explorer-image' src={getImageUrl(d.filename)} onWheel={null} onScroll={null}/>
+                    <img className='explorer-image clickable' data-name={d.filename} src={getImageUrl(d.filename)} onClick={this.imageDetail} onWheel={null} onScroll={null}/>
                 </div>;
             });
+        const overlay = this.state.imageDetail
+            ? <ImageDetail filename={this.state.imageDetail} close={() => this.setState({imageDetail: null})}/>
+            : null;
         return <div className='explorer' id='explorer-div' onWheel={this.wheel} onScroll={this.scroll}>
-            {
-                child
-            }
+            {overlay}
+            {child}
         </div>;
     }
 }

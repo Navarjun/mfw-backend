@@ -27,29 +27,34 @@ export class FilterBar extends React.Component {
     }
 
     componentWillMount () {
-        this.updateFilters();
+        this.updateFilters([], undefined);
     }
 
-    updateFilters () {
-        this.getFilteredCounts('mConcern', (err, data) => {
+    updateFilters (activeFilters, searchString) {
+        if (this.props.filtersUpdated) {
+            this.props.filtersUpdated(activeFilters, searchString);
+        }
+        this.getFilteredCounts('mConcern', activeFilters, searchString, (err, data) => {
             if (err) {
                 console.log(err);
                 return;
             }
             const mConcernCount = data;
-            this.getFilteredCounts('mStrategy', (err, data) => {
+            this.getFilteredCounts('mStrategy', activeFilters, searchString, (err, data) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 const mStrategyCount = data;
-                this.getFilteredCounts('mContains', (err, data) => {
+                this.getFilteredCounts('mContains', activeFilters, searchString, (err, data) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     const mContainsCount = data;
                     this.setState({
+                        activeFilters: activeFilters,
+                        searchString: searchString,
                         mConcernCount: mConcernCount,
                         mStrategyCount: mStrategyCount,
                         mContainsCount: mContainsCount
@@ -59,8 +64,8 @@ export class FilterBar extends React.Component {
         });
     }
 
-    getFilteredCounts (colName, callback) {
-        const filterData = this.state.activeFilters.map(d => {
+    getFilteredCounts (colName, activeFilters, searchString, callback) {
+        const filterData = activeFilters.map(d => {
             var x = {};
             x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
             return {$match: x};
@@ -106,22 +111,14 @@ export class FilterBar extends React.Component {
         } else {
             paramFilter.values.splice(index, 1);
         }
-        this.setState({activeFilters: activeFilters, searchString: undefined});
-        this.updateFilters();
+        // this.setState({activeFilters: activeFilters, searchString: undefined});
+        this.updateFilters(activeFilters, undefined);
     }
 
     removeFilter (e) {
         const colName = e.target.dataset.filterKey;
         const value = e.target.dataset.filterValue;
-        const activeFilters = _.cloneDeep(this.state.activeFilters);
-        let paramFilter = activeFilters.filter(d => d.key === colName);
-        if (paramFilter.length === 0) {
-            return;
-        }
-        paramFilter = paramFilter[0];
-        paramFilter.values = paramFilter.values.filter(d => d !== value);
-        this.setState({activeFilters: activeFilters, searchString: undefined});
-        this.updateFilters();
+        this.filterValues(colName, value);
     }
 
     search () {
@@ -193,7 +190,7 @@ export class FilterBar extends React.Component {
 
         return (
             <div>
-                <div className="navbar navbar-expand-lg navbar-light bg-light" style={{zIndex: 1}}>
+                <div className="navbar navbar-expand-lg navbar-light bg-light" style={{zIndex: 10}}>
                     {/* <a className="navbar-brand" href="#">All</a> */}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -218,11 +215,6 @@ export class FilterBar extends React.Component {
                     </ul>
                 </div>
                 {/* {filterList} */}
-                <div className='container-fluid' id='explorer'>
-                    <div className='row'>
-                        <Explorer filterData={this.state.activeFilters} searchString={this.state.searchString}></Explorer>
-                    </div>
-                </div>
             </div>
         );
     }
