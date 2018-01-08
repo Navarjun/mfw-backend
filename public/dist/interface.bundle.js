@@ -50748,6 +50748,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
         value: function search() {
             if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
                 this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+                this.updateFilters([], document.querySelector('#search-field').value);
             }
         }
     }, {

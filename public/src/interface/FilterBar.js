@@ -124,6 +124,7 @@ export class FilterBar extends React.Component {
     search () {
         if (document.querySelector('#search-field').value && document.querySelector('#search-field').value !== '') {
             this.setState({ activeFilters: [], searchString: document.querySelector('#search-field').value });
+            this.updateFilters([], document.querySelector('#search-field').value);
         }
     }
 
