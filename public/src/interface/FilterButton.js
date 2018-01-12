@@ -9,6 +9,7 @@ export class FilterButton extends React.Component {
         };
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.filterClicked = this.filterClicked.bind(this);
+        this.hideDropdown = this.hideDropdown.bind(this);
     }
 
     toggleDropdown () {
@@ -22,6 +23,13 @@ export class FilterButton extends React.Component {
         }
     }
 
+    hideDropdown (e) {
+        e.preventDefault();
+        if (e.currentTarget === e.target) {
+            this.setState({isSelected: false});
+        }
+    }
+
     render () {
         const button = <button className={this.props.className + ' filter-button'} onClick={this.toggleDropdown}>{this.props.children}</button>;
         const values = this.props.values.map((d, i) => {
@@ -32,8 +40,8 @@ export class FilterButton extends React.Component {
         });
         return <div>
             {button}
-            <div>
-                <ul style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: 0}}>
+            <div style={{background: '#f8f9fa'}}>
+                <ul onMouseLeave={this.hideDropdown} style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', background: 'rgba(0,0,0,0)'}}>
                     {values}
                 </ul>
             </div>

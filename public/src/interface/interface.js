@@ -6,11 +6,11 @@ import {Navbar} from './Navbar';
 import { FilterBar } from './FilterBar';
 import '../../stylesheets/interface.scss';
 
-let shouldUpdate = false;
 class Interface extends React.Component {
     constructor (props) {
         super(props);
         this.updateFilters = this.updateFilters.bind(this);
+        this.shouldUpdate = false;
         this.state = {
             activeFilters: [],
             searchString: undefined
@@ -18,8 +18,8 @@ class Interface extends React.Component {
     }
 
     shouldComponentUpdate () {
-        if (shouldUpdate) {
-            shouldUpdate = false;
+        if (this.shouldUpdate) {
+            this.shouldUpdate = false;
             return true;
         }
         return false;
@@ -30,7 +30,7 @@ class Interface extends React.Component {
             activeFilters: activeFilters,
             searchString: searchString
         }, () => {
-            shouldUpdate = true;
+            this.shouldUpdate = true;
             this.forceUpdate();
         });
     }

@@ -43295,8 +43295,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var shouldUpdate = false;
-
 var Interface = function (_React$Component) {
     _inherits(Interface, _React$Component);
 
@@ -43306,6 +43304,7 @@ var Interface = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Interface.__proto__ || Object.getPrototypeOf(Interface)).call(this, props));
 
         _this.updateFilters = _this.updateFilters.bind(_this);
+        _this.shouldUpdate = false;
         _this.state = {
             activeFilters: [],
             searchString: undefined
@@ -43316,8 +43315,8 @@ var Interface = function (_React$Component) {
     _createClass(Interface, [{
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate() {
-            if (shouldUpdate) {
-                shouldUpdate = false;
+            if (this.shouldUpdate) {
+                this.shouldUpdate = false;
                 return true;
             }
             return false;
@@ -43331,7 +43330,7 @@ var Interface = function (_React$Component) {
                 activeFilters: activeFilters,
                 searchString: searchString
             }, function () {
-                shouldUpdate = true;
+                _this2.shouldUpdate = true;
                 _this2.forceUpdate();
             });
         }
@@ -50790,7 +50789,11 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                     _react2.default.createElement(
                         _FilterButton.FilterButton,
                         { className: className, values: _this3.state[filter.key + 'Count'], active: active, colName: filter.key, onClick: _this3.filterValueClicked },
-                        filter.display
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            filter.display
+                        )
                     )
                 );
             });
@@ -54448,6 +54451,7 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
         };
         _this.toggleDropdown = _this.toggleDropdown.bind(_this);
         _this.filterClicked = _this.filterClicked.bind(_this);
+        _this.hideDropdown = _this.hideDropdown.bind(_this);
         return _this;
     }
 
@@ -54462,6 +54466,14 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
             e.preventDefault();
             if (e.currentTarget.dataset.value && e.currentTarget.dataset.value !== '') {
                 this.props.onClick(this.props.colName, e.currentTarget.dataset.value);
+            }
+        }
+    }, {
+        key: 'hideDropdown',
+        value: function hideDropdown(e) {
+            e.preventDefault();
+            if (e.currentTarget === e.target) {
+                this.setState({ isSelected: false });
             }
         }
     }, {
@@ -54499,10 +54511,10 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
                 button,
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { style: { background: '#f8f9fa' } },
                     _react2.default.createElement(
                         'ul',
-                        { style: { height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: 0 } },
+                        { onMouseLeave: this.hideDropdown, style: { height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', background: 'rgba(0,0,0,0)' } },
                         values
                     )
                 )
@@ -71673,7 +71685,7 @@ exports = module.exports = __webpack_require__(354)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: scroll;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px - 103px);\n  width: 100%;\n  overflow: scroll;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n#explorer {\n  background: #222;\n  height: calc(100% - 112px); }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: white;\n  list-style: none;\n  margin: 0;\n  padding: 5px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  margin-left: 8px; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  z-index: 1; }\n  #image-detail > * {\n    width: 50%;\n    padding: 5%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div {\n      width: 100%; }\n      #image-detail > * div .head {\n        font-weight: bold; }\n      #image-detail > * div .tab {\n        padding-right: 8px; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n", ""]);
+exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: scroll;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px - 103px);\n  width: 100%;\n  overflow: scroll;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n#explorer {\n  background: #222;\n  height: calc(100% - 112px); }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: #f8f9fa;\n  list-style: none;\n  margin: 0;\n  padding: 10px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  transition: all 0.5s; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  z-index: 1; }\n  #image-detail > * {\n    width: 50%;\n    padding: 5%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div {\n      width: 100%; }\n      #image-detail > * div .head {\n        font-weight: bold; }\n      #image-detail > * div .tab {\n        padding-right: 8px; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n", ""]);
 
 // exports
 
