@@ -67,6 +67,9 @@ export class Explorer extends React.Component {
     }
 
     wheel (e) {
+        if (this.state.imageDetail) {
+            return;
+        }
         if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
             // if user is scrolling right/left
             return;
@@ -118,9 +121,9 @@ export class Explorer extends React.Component {
         const overlay = this.state.imageDetail
             ? <ImageDetail filename={this.state.imageDetail} close={() => this.setState({imageDetail: null})}/>
             : null;
-        return <div id='explorer-div' onWheel={this.wheel} onScroll={this.scroll}>
+        return <div style={{position: 'relative'}} onWheel={this.wheel} onScroll={this.scroll}>
             {overlay}
-            <div className='explorer'>
+            <div className='explorer' id='explorer-div'>
                 {child}
             </div>
         </div>;
