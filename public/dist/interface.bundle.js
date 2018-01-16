@@ -41189,25 +41189,30 @@ var Explorer = exports.Explorer = function (_React$Component) {
         }
     }, {
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps() {
+        value: function componentWillReceiveProps(nextProps) {
             var _this3 = this;
 
-            if (this.props.searchString && this.props.searchString !== '') {
+            if (nextProps.searchString && nextProps.searchString !== '') {
                 this.setState({ loading: true });
-                (0, _d.json)('/api/v1/search?query=' + this.props.searchString, function (err, data) {
+                (0, _d.json)('/api/v1/search?query=' + nextProps.searchString, function (err, data) {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     _this3.setState({ data: data.data, loading: false });
                 });
-            } else if (this.props.filterData && this.props.filterData.length > 0) {
+            } else if (nextProps.filterData && nextProps.filterData.length > 0) {
                 this.setState({ loading: true });
-                var filterData = this.props.filterData.map(function (d) {
-                    var x = {};
-                    x[d.key] = { $regex: d.values.join('|'), $options: 'i' };
-                    return { $match: x };
-                });
+                var filterData = [];
+                for (var i = 0; i < nextProps.filterData.length; i++) {
+                    var d = nextProps.filterData[i];
+                    for (var j = 0; j < d.values.length; j++) {
+                        var obj = {};
+                        obj[d.key] = { $regex: d.values[j], $options: 'i' };
+                        filterData.push({ $match: obj });
+                    }
+                }
+                // const x = [{'$match': {'mConcern': {'$regex': 'peace', '$options': 'i'}}}];
                 (0, _d.json)('/api/v1/aggregate?query=' + JSON.stringify(filterData), function (err, data) {
                     if (err) {
                         console.log(err);
@@ -41215,12 +41220,22 @@ var Explorer = exports.Explorer = function (_React$Component) {
                     }
                     _this3.setState({ data: data.data, loading: false });
                 });
+            } else {
+                (0, _d.json)('/api/v1/images', function (err, data) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    _this3.setState({ data: data.data, loading: false });
+                });
             }
-            // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
         }
     }, {
         key: 'wheel',
         value: function wheel(e) {
+            if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
+                // if user is scrolling right/left
+                return;
+            }
             e.preventDefault();
             var ele = document.getElementById('explorer-div');
 
@@ -41273,9 +41288,13 @@ var Explorer = exports.Explorer = function (_React$Component) {
                 } }) : null;
             return _react2.default.createElement(
                 'div',
-                { className: 'explorer', id: 'explorer-div', onWheel: this.wheel, onScroll: this.scroll },
+                { id: 'explorer-div', onWheel: this.wheel, onScroll: this.scroll },
                 overlay,
-                child
+                _react2.default.createElement(
+                    'div',
+                    { className: 'explorer' },
+                    child
+                )
             );
         }
     }]);
@@ -50638,6 +50657,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
         _this.updateFilters = _this.updateFilters.bind(_this);
         _this.search = _this.search.bind(_this);
         _this.searchInputEvent = _this.searchInputEvent.bind(_this);
+        _this.removeSearch = _this.removeSearch.bind(_this);
         return _this;
     }
 
@@ -50686,22 +50706,24 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
     }, {
         key: 'getFilteredCounts',
         value: function getFilteredCounts(colName, activeFilters, searchString, callback) {
-            var filterData = activeFilters.map(function (d) {
-                var x = {};
-                x[d.key] = { $regex: d.values.join('|'), $options: 'i' };
-                return { $match: x };
-            });
+            var filterData = [];
+            for (var i = 0; i < activeFilters.length; i++) {
+                var d = activeFilters[i];
+                for (var j = 0; j < d.values.length; j++) {
+                    var obj = {};
+                    obj[d.key] = { $regex: d.values[j], $options: 'i' };
+                    filterData.push({ $match: obj });
+                }
+            }
             var query = filterData.concat([{ $unwind: '$' + colName }, { $group: {
                     _id: '$' + colName,
                     count: { $sum: 1 }
                 } }, { $sort: { count: -1 } }]);
-
-            (0, _d.json)('/api/v1/aggregate?query=' + JSON.stringify(query), function (err, data) {
+            query = '/api/v1/aggregate?query=' + JSON.stringify(query);
+            (0, _d.json)(query, function (err, data) {
                 if (err) {
                     console.log(err);
                 }
-                // const obj = {};
-                // obj[colName + 'Count'] = data.data;
                 callback(null, data.data);
             });
         }
@@ -50732,6 +50754,9 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
             } else {
                 paramFilter.values.splice(index, 1);
             }
+            if (paramFilter.values.length === 0) {
+                activeFilters.splice(activeFilters.indexOf(paramFilter), 1);
+            }
             // this.setState({activeFilters: activeFilters, searchString: undefined});
             this.updateFilters(activeFilters, undefined);
         }
@@ -50751,26 +50776,38 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
             }
         }
     }, {
+        key: 'removeSearch',
+        value: function removeSearch() {
+            var _this3 = this;
+
+            if (this.state.searchString) {
+                this.setState({ searchString: undefined }, function () {
+                    _this3.updateFilters(_this3.state.activeFilters, undefined);
+                });
+            }
+        }
+    }, {
         key: 'searchInputEvent',
         value: function searchInputEvent(e) {
             if (e.charCode === 13) {
+                e.preventDefault();
                 this.search();
             }
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var filters = [{ key: 'mConcern', display: 'Concern' }, { key: 'mStrategy', display: 'Strategy' }, { key: 'mContains', display: 'Contains' }];
 
             var filterButtons = filters.map(function (filter, i) {
                 // filter active values
                 // for particular column
-                var activeFilters = _this3.state.activeFilters.filter(function (d) {
+                var activeFilters = _this4.state.activeFilters.filter(function (d) {
                     return d.key === filter.key;
                 });
-                var active = _this3.state.activeFilters ? activeFilters.length > 0 ? activeFilters[0].values : [] : // if no values return an empty array
+                var active = _this4.state.activeFilters ? activeFilters.length > 0 ? activeFilters[0].values : [] : // if no values return an empty array
                 [];
                 var className = '';
                 switch (filter.key) {
@@ -50786,15 +50823,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                 return _react2.default.createElement(
                     'li',
                     { key: i },
-                    _react2.default.createElement(
-                        _FilterButton.FilterButton,
-                        { className: className, values: _this3.state[filter.key + 'Count'], active: active, colName: filter.key, onClick: _this3.filterValueClicked },
-                        _react2.default.createElement(
-                            'span',
-                            null,
-                            filter.display
-                        )
-                    )
+                    _react2.default.createElement(_FilterButton.FilterButton, { className: className, values: _this4.state[filter.key + 'Count'], active: active, colName: filter.key, onClick: _this4.filterValueClicked, title: filter.display })
                 );
             });
 
@@ -50821,7 +50850,7 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                                 filterVal,
                                 _react2.default.createElement(
                                     'span',
-                                    { className: 'margin-left-sm clickable hover-glow-light', 'aria-hidden': 'true', 'data-filter-key': filter.key, 'data-filter-value': filterVal, onClick: _this3.removeFilter },
+                                    { className: 'margin-left-sm clickable hover-glow-light', 'aria-hidden': 'true', 'data-filter-key': filter.key, 'data-filter-value': filterVal, onClick: _this4.removeFilter },
                                     '\xD7'
                                 )
                             )
@@ -50862,7 +50891,12 @@ var FilterBar = exports.FilterBar = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'form-inline my-2 my-lg-0' },
-                            _react2.default.createElement('input', { className: 'form-control mr-sm-2', id: 'search-field', type: 'search', placeholder: 'Search', 'aria-label': 'Search', onKeyPress: this.searchInputEvent }),
+                            _react2.default.createElement(
+                                'form',
+                                { style: { margin: 0 }, onReset: this.removeSearch },
+                                _react2.default.createElement('input', { className: 'form-control mr-sm-2', id: 'search-field', type: 'search', placeholder: 'Search', 'aria-label': 'Search', onKeyPress: this.searchInputEvent }),
+                                _react2.default.createElement('button', { className: 'close-icon', type: 'reset' })
+                            ),
                             _react2.default.createElement(
                                 'button',
                                 { className: 'btn btn-outline-success my-2 my-sm-0', type: 'submit', onClick: this.search },
@@ -54484,7 +54518,16 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
             var button = _react2.default.createElement(
                 'button',
                 { className: this.props.className + ' filter-button', onClick: this.toggleDropdown },
-                this.props.children
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    this.props.title
+                ),
+                _react2.default.createElement(
+                    'span',
+                    { className: 'filter-button-expand' },
+                    this.state.isSelected ? '-' : '+'
+                )
             );
             var values = this.props.values.map(function (d, i) {
                 var classNames = _this2.props.active.includes(d._id) ? 'filter-button-li active' : 'filter-button-li';
@@ -54511,10 +54554,10 @@ var FilterButton = exports.FilterButton = function (_React$Component) {
                 button,
                 _react2.default.createElement(
                     'div',
-                    { style: { background: '#f8f9fa' } },
+                    null,
                     _react2.default.createElement(
                         'ul',
-                        { onMouseLeave: this.hideDropdown, style: { height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', background: 'rgba(0,0,0,0)' } },
+                        { onMouseLeave: this.hideDropdown, style: { height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', paddingTop: '40px', top: '10px', background: 'rgba(0,0,0,0)' } },
                         values
                     )
                 )
@@ -71685,7 +71728,7 @@ exports = module.exports = __webpack_require__(354)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: scroll;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px - 103px);\n  width: 100%;\n  overflow: scroll;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n#explorer {\n  background: #222;\n  height: calc(100% - 112px); }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: #f8f9fa;\n  list-style: none;\n  margin: 0;\n  padding: 10px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  transition: all 0.5s; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  z-index: 1; }\n  #image-detail > * {\n    width: 50%;\n    padding: 5%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div {\n      width: 100%; }\n      #image-detail > * div .head {\n        font-weight: bold; }\n      #image-detail > * div .tab {\n        padding-right: 8px; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n", ""]);
+exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: scroll;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px - 103px);\n  width: 100%;\n  overflow: scroll;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n#explorer-div {\n  position: relative; }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: #f8f9fa;\n  list-style: none;\n  margin: 0;\n  padding: 10px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  transition: all 0.5s; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-button-expand {\n  float: right;\n  line-height: 1em;\n  font-size: 1.3em; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  z-index: 1; }\n  #image-detail > * {\n    width: 50%;\n    padding: 5%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div {\n      width: 100%; }\n      #image-detail > * div .head {\n        font-weight: bold; }\n      #image-detail > * div .tab {\n        padding-right: 8px; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n\n.close-icon {\n  border: 1px solid transparent;\n  background-color: transparent;\n  display: inline-block;\n  vertical-align: middle;\n  outline: 0;\n  cursor: pointer;\n  font-family: Helvetica,Arial,Verdana;\n  width: 0px; }\n\n.close-icon::after {\n  content: \"X\";\n  display: block;\n  width: 15px;\n  height: 15px;\n  position: relative;\n  background-color: grey;\n  z-index: 1;\n  left: -38px;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  padding: 2px;\n  border-radius: 50%;\n  text-align: center;\n  color: white;\n  font-weight: normal;\n  font-size: 12px;\n  box-shadow: 0 0 2px darkgrey;\n  cursor: pointer;\n  line-height: 1em; }\n\n.close-icon:focus {\n  outline: none; }\n", ""]);
 
 // exports
 

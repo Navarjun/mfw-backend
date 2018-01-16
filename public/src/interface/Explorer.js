@@ -27,23 +27,28 @@ export class Explorer extends React.Component {
         });
     }
 
-    componentWillReceiveProps () {
-        if (this.props.searchString && this.props.searchString !== '') {
+    componentWillReceiveProps (nextProps) {
+        if (nextProps.searchString && nextProps.searchString !== '') {
             this.setState({loading: true});
-            json('/api/v1/search?query=' + this.props.searchString, (err, data) => {
+            json('/api/v1/search?query=' + nextProps.searchString, (err, data) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 this.setState({data: data.data, loading: false});
             });
-        } else if (this.props.filterData && this.props.filterData.length > 0) {
+        } else if (nextProps.filterData && nextProps.filterData.length > 0) {
             this.setState({loading: true});
-            const filterData = this.props.filterData.map(d => {
-                var x = {};
-                x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
-                return {$match: x};
-            });
+            const filterData = [];
+            for (var i = 0; i < nextProps.filterData.length; i++) {
+                let d = nextProps.filterData[i];
+                for (var j = 0; j < d.values.length; j++) {
+                    let obj = {};
+                    obj[d.key] = {$regex: d.values[j], $options: 'i'};
+                    filterData.push({$match: obj});
+                }
+            }
+            // const x = [{'$match': {'mConcern': {'$regex': 'peace', '$options': 'i'}}}];
             json('/api/v1/aggregate?query=' + JSON.stringify(filterData), (err, data) => {
                 if (err) {
                     console.log(err);
@@ -51,11 +56,21 @@ export class Explorer extends React.Component {
                 }
                 this.setState({data: data.data, loading: false});
             });
+        } else {
+            json('/api/v1/images', (err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                this.setState({data: data.data, loading: false});
+            });
         }
-        // const x = [{'$match': {'mConcern': {'$regex': 'feminism | peace', '$options': 'i'}}}];
     }
 
     wheel (e) {
+        if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) {
+            // if user is scrolling right/left
+            return;
+        }
         e.preventDefault();
         const ele = document.getElementById('explorer-div');
 
@@ -103,9 +118,11 @@ export class Explorer extends React.Component {
         const overlay = this.state.imageDetail
             ? <ImageDetail filename={this.state.imageDetail} close={() => this.setState({imageDetail: null})}/>
             : null;
-        return <div className='explorer' id='explorer-div' onWheel={this.wheel} onScroll={this.scroll}>
+        return <div id='explorer-div' onWheel={this.wheel} onScroll={this.scroll}>
             {overlay}
-            {child}
+            <div className='explorer'>
+                {child}
+            </div>
         </div>;
     }
 }

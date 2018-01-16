@@ -31,7 +31,10 @@ export class FilterButton extends React.Component {
     }
 
     render () {
-        const button = <button className={this.props.className + ' filter-button'} onClick={this.toggleDropdown}>{this.props.children}</button>;
+        const button = <button className={this.props.className + ' filter-button'} onClick={this.toggleDropdown}>
+            <span>{this.props.title}</span>
+            <span className="filter-button-expand">{ this.state.isSelected ? '-' : '+' }</span>
+        </button>;
         const values = this.props.values.map((d, i) => {
             const classNames = this.props.active.includes(d._id) ? 'filter-button-li active' : 'filter-button-li';
             return <li className={classNames} key={i} data-value={d._id} onClick={this.filterClicked}>
@@ -40,8 +43,8 @@ export class FilterButton extends React.Component {
         });
         return <div>
             {button}
-            <div style={{background: '#f8f9fa'}}>
-                <ul onMouseLeave={this.hideDropdown} style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', background: 'rgba(0,0,0,0)'}}>
+            <div>
+                <ul onMouseLeave={this.hideDropdown} style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', paddingTop: '40px', top: '10px', background: 'rgba(0,0,0,0)'}}>
                     {values}
                 </ul>
             </div>

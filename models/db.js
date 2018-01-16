@@ -89,7 +89,7 @@ obj.aggregate = function (array, callback) {
 
 obj.search = function(searchString, callback) {
     ImageModel.aggregate([
-        { $match: { $text: { $search: searchString } } },
+        { $match: { $text: { $search: searchString.toLowerCase() } } },
         { $sort: { score: { $meta: "textScore" } } },
         { $project: { _id: 0 } }
     ], function (err, data) {

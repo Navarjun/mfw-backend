@@ -24,6 +24,7 @@ export class FilterBar extends React.Component {
         this.updateFilters = this.updateFilters.bind(this);
         this.search = this.search.bind(this);
         this.searchInputEvent = this.searchInputEvent.bind(this);
+        this.removeSearch = this.removeSearch.bind(this);
     }
 
     componentWillMount () {
@@ -65,12 +66,16 @@ export class FilterBar extends React.Component {
     }
 
     getFilteredCounts (colName, activeFilters, searchString, callback) {
-        const filterData = activeFilters.map(d => {
-            var x = {};
-            x[d.key] = {$regex: d.values.join('|'), $options: 'i'};
-            return {$match: x};
-        });
-        const query = filterData.concat([
+        const filterData = [];
+        for (var i = 0; i < activeFilters.length; i++) {
+            let d = activeFilters[i];
+            for (var j = 0; j < d.values.length; j++) {
+                let obj = {};
+                obj[d.key] = {$regex: d.values[j], $options: 'i'};
+                filterData.push({$match: obj});
+            }
+        }
+        let query = filterData.concat([
             {$unwind: '$' + colName},
             {$group: {
                 _id: '$' + colName,
@@ -78,13 +83,11 @@ export class FilterBar extends React.Component {
             }},
             { $sort: {count: -1} }
         ]);
-
-        json('/api/v1/aggregate?query=' + JSON.stringify(query), (err, data) => {
+        query = '/api/v1/aggregate?query=' + JSON.stringify(query);
+        json(query, (err, data) => {
             if (err) {
                 console.log(err);
             }
-            // const obj = {};
-            // obj[colName + 'Count'] = data.data;
             callback(null, data.data);
         });
     }
@@ -111,6 +114,9 @@ export class FilterBar extends React.Component {
         } else {
             paramFilter.values.splice(index, 1);
         }
+        if (paramFilter.values.length === 0) {
+            activeFilters.splice(activeFilters.indexOf(paramFilter), 1);
+        }
         // this.setState({activeFilters: activeFilters, searchString: undefined});
         this.updateFilters(activeFilters, undefined);
     }
@@ -128,8 +134,17 @@ export class FilterBar extends React.Component {
         }
     }
 
+    removeSearch () {
+        if (this.state.searchString) {
+            this.setState({ searchString: undefined }, () => {
+                this.updateFilters(this.state.activeFilters, undefined);
+            });
+        }
+    }
+
     searchInputEvent (e) {
         if (e.charCode === 13) {
+            e.preventDefault();
             this.search();
         }
     }
@@ -160,7 +175,8 @@ export class FilterBar extends React.Component {
                 className += 'contains';
             }
             return <li key={i}>
-                <FilterButton className={className} values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked}>{filter.display}</FilterButton>
+                <FilterButton className={className} values={this.state[filter.key + 'Count']} active={active} colName={filter.key} onClick={this.filterValueClicked} title={filter.display}>
+                </FilterButton>
             </li>;
         });
 
@@ -205,7 +221,10 @@ export class FilterBar extends React.Component {
                             {filterButtons}
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" id="search-field" type="search" placeholder="Search" aria-label="Search" onKeyPress={this.searchInputEvent}/>
+                            <form style={{margin: 0}} onReset={this.removeSearch}>
+                                <input className="form-control mr-sm-2" id="search-field" type="search" placeholder="Search" aria-label="Search" onKeyPress={this.searchInputEvent}/>
+                                <button className="close-icon" type="reset"></button>
+                            </form>
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.search}>Search</button>
                         </div>
                     </div>

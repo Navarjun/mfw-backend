@@ -71,9 +71,8 @@ body {
     position: absolute;
 }
 
-#explorer {
-    background: #222;
-    height: calc(100% - 112px);
+#explorer-div {
+    position: relative;
 }
 
 .filter-button {
@@ -123,6 +122,11 @@ body {
 }
 .filter-button-li.active {
     background: #888;
+}
+.filter-button-expand {
+    float: right;
+    line-height: 1em;
+    font-size: 1.3em;
 }
 .filter-count {
     font-size: 0.8em;
@@ -210,4 +214,40 @@ body {
 
 .hover-glow-light:hover {
     text-shadow: 0 0 3px #fff;
+}
+.close-icon {
+	border:1px solid transparent;
+	background-color: transparent;
+	display: inline-block;
+	vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+    font-family: Helvetica,Arial,Verdana;
+    width: 0px;
+}
+.close-icon::after {
+	content: "X";
+	display: block;
+	width: 15px;
+	height: 15px;
+	position: relative;
+	background-color: grey;
+    z-index:1;
+    left: -38px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	padding: 2px;
+	border-radius: 50%;
+	text-align: center;
+	color: white;
+	font-weight: normal;
+	font-size: 12px;
+	box-shadow: 0 0 2px darkgrey;
+    cursor: pointer;
+    line-height: 1em;
+}
+.close-icon:focus {
+    outline: none;
 }
