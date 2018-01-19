@@ -11,6 +11,7 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "express-react-views": "^0.10.2",
+    "express-useragent": "^1.0.8",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.4",
     "morgan": "~1.8.1",

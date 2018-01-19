@@ -1,0 +1,126 @@
+$background-color: #f8f9fa;
+$concern-color-light: #f99e7c;
+$concern-color: #FF7F50;
+$concern-color-dark: #d16740;
+
+$strategy-color-light: #23d1c7;
+$strategy-color: #20B2AA;
+$strategy-color-dark: #16827c;
+
+$contain-color-light: #a55015;
+$contain-color: #8B4513;
+$contain-color-dark: #6b340d;
+
+$base-grey: rgb(51, 51, 51);
+
+html {
+    font-size: 200%;
+}
+
+body {
+    background: $background-color!important;
+    padding: 0px;
+    margin: 0px;
+}
+
+.nav-title {
+    color: $base-grey;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    font-family: Helvetica,Arial,Verdana;
+}
+
+.menu-button {
+    position: absolute;
+    right: 16px;
+    color: $base-grey;
+}
+
+.filter {
+    color: $base-grey;
+    font-size: 0.7rem;
+    padding: 16px;
+    .result-count {
+        font-weight: bold;
+    }
+    .filter-buttons {
+        position: absolute;
+        right: 8px;
+        margin-top: 5px;
+        & > * {
+            padding: 8px;
+            font-size: 0.5rem;
+            line-height: 0.7rem;
+        }
+    }
+}
+
+#explorer-div {
+    height: calc(100% - 48px - 60px);
+    overflow-y: scroll;
+}
+
+.explorer-image {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.image-detail-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 100;
+    background: rgba(0,0,0,0.8);
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.image-detail {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    & > * {
+        overflow: scroll;
+        height: 50%;
+        width: 100%;
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        vertical-align: center;
+        img {
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .head {
+            text-align: right;
+            font-weight: bold;
+        }
+        table {
+            margin-left: 8px;
+            margin-right: 8px;
+        }
+        td {
+            color: white;
+            padding: 4px;
+        }
+    }
+}
+
+.close-btn {
+    position: fixed;
+    right: 16px;
+    top: 0px;
+    padding: 5px;
+    width: auto;
+    color: white;
+    button.close {
+        span {
+            color: white;
+        }
+    }
+}

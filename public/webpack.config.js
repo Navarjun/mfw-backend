@@ -7,7 +7,8 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 module.exports = {
     entry: {
         index: './src/index.js',
-        interface: './src/interface/interface.js'
+        interface: './src/interface/interface.js',
+        m_interface: './src/m_interface/interface.js'
     },
     output: {
         path: path.join(__dirname, '/dist'),
