@@ -44611,18 +44611,104 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Navbar = exports.Navbar = function (_React$Component) {
     _inherits(Navbar, _React$Component);
 
-    function Navbar() {
+    function Navbar(props) {
         _classCallCheck(this, Navbar);
 
-        return _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Navbar.__proto__ || Object.getPrototypeOf(Navbar)).call(this, props));
+
+        _this.state = {
+            isMenuVisible: false
+        };
+
+        _this.menu = _this.menu.bind(_this);
+        return _this;
     }
 
     _createClass(Navbar, [{
+        key: 'menu',
+        value: function menu(visible) {
+            this.setState({ isMenuVisible: visible });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var menu = null;
+            if (this.state.isMenuVisible) {
+                menu = _react2.default.createElement(
+                    'div',
+                    { className: 'menu' },
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            { className: '' },
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'button', className: 'close', 'aria-label': 'Close', onClick: function onClick() {
+                                        return _this2.menu(false);
+                                    } },
+                                _react2.default.createElement(
+                                    'span',
+                                    { 'aria-hidden': 'true', style: { color: 'white' } },
+                                    '\xD7'
+                                )
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '/', onClick: function onClick() {
+                                        return _this2.menu(false);
+                                    } },
+                                'Browse'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '/', onClick: function onClick() {
+                                        return _this2.menu(false);
+                                    } },
+                                'Visualization'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '/about', onClick: function onClick() {
+                                        return _this2.menu(false);
+                                    } },
+                                'About'
+                            )
+                        )
+                    )
+                );
+            }
             return _react2.default.createElement(
                 'div',
-                { className: 'row' },
+                { className: 'row', style: { padding: '16px' } },
+                menu,
                 _react2.default.createElement(
                     _reactRouterDom.Link,
                     { to: '/', className: 'nav-title' },
@@ -44630,7 +44716,9 @@ var Navbar = exports.Navbar = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'button',
-                    { className: 'menu-button' },
+                    { className: 'menu-button', onClick: function onClick() {
+                            return _this2.menu(true);
+                        } },
                     '\u2261'
                 )
             );
@@ -44971,7 +45059,7 @@ var ImageDetail = exports.ImageDetail = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'row image-detail-container' },
+                { className: 'image-detail-container' },
                 _react2.default.createElement(
                     'div',
                     { className: 'close-btn' },
@@ -45050,7 +45138,7 @@ exports = module.exports = __webpack_require__(216)(undefined);
 
 
 // module
-exports.push([module.i, "html {\n  font-size: 200%; }\n\nbody {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.nav-title {\n  color: #333333;\n  padding: 8px;\n  font-weight: bold;\n  font-size: 0.9rem;\n  font-family: Helvetica,Arial,Verdana; }\n\n.menu-button {\n  position: absolute;\n  right: 16px;\n  color: #333333; }\n\n.filter {\n  color: #333333;\n  font-size: 0.7rem;\n  padding: 16px; }\n  .filter .result-count {\n    font-weight: bold; }\n  .filter .filter-buttons {\n    position: absolute;\n    right: 8px;\n    margin-top: 5px; }\n    .filter .filter-buttons > * {\n      padding: 8px;\n      font-size: 0.5rem;\n      line-height: 0.7rem; }\n\n#explorer-div {\n  height: calc(100% - 48px - 60px);\n  overflow-y: scroll; }\n\n.explorer-image {\n  width: 100%;\n  padding-top: 15px;\n  padding-bottom: 15px; }\n\n.image-detail-container {\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  z-index: 100;\n  background: rgba(0, 0, 0, 0.8);\n  top: 0px;\n  left: 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center; }\n\n.image-detail {\n  display: flex;\n  flex-direction: column;\n  color: white; }\n  .image-detail > * {\n    overflow: scroll;\n    height: 50%;\n    width: 100%;\n    padding: 8px;\n    display: flex;\n    justify-content: center;\n    vertical-align: center; }\n    .image-detail > * img {\n      object-fit: contain;\n      max-width: 100%;\n      max-height: 100%; }\n    .image-detail > * .head {\n      text-align: right;\n      font-weight: bold; }\n    .image-detail > * table {\n      margin-left: 8px;\n      margin-right: 8px; }\n    .image-detail > * td {\n      color: white;\n      padding: 4px; }\n\n.close-btn {\n  position: fixed;\n  right: 16px;\n  top: 0px;\n  padding: 5px;\n  width: auto;\n  color: white; }\n  .close-btn button.close span {\n    color: white; }\n", ""]);
+exports.push([module.i, "html {\n  font-size: 200%; }\n\nbody {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px; }\n\n.nav-title {\n  color: #333333;\n  padding: 8px;\n  padding-left: 0px;\n  font-weight: bold;\n  font-size: 0.9rem;\n  font-family: Helvetica,Arial,Verdana; }\n\n.menu-button {\n  position: absolute;\n  right: 16px;\n  color: #333333; }\n\n.menu {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.8);\n  top: 0px;\n  left: 0px;\n  display: flex;\n  flex-direction: column;\n  z-index: 100;\n  padding: 16px; }\n  .menu > * {\n    width: 100%;\n    padding-top: 8px;\n    padding-bottom: 8px;\n    text-align: center; }\n    .menu > * a {\n      color: white; }\n\n.filter {\n  color: #333333;\n  font-size: 0.7rem;\n  padding: 16px;\n  padding-top: 0px; }\n  .filter .result-count {\n    font-weight: bold; }\n  .filter .filter-buttons {\n    position: absolute;\n    right: 8px;\n    margin-top: 5px; }\n    .filter .filter-buttons > * {\n      padding: 8px;\n      font-size: 0.5rem;\n      line-height: 0.7rem; }\n\n#explorer-div {\n  height: calc(100% - 48px - 60px);\n  overflow-y: scroll; }\n\n.explorer-image {\n  width: 100%;\n  padding-top: 15px;\n  padding-bottom: 15px; }\n\n.image-detail-container {\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  z-index: 100;\n  background: rgba(0, 0, 0, 0.8);\n  top: 0px;\n  left: 0px;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center; }\n\n.image-detail {\n  display: flex;\n  flex-direction: column;\n  color: white; }\n  .image-detail > * {\n    overflow: scroll;\n    height: 50%;\n    width: 100%;\n    padding: 8px;\n    display: flex;\n    justify-content: center;\n    vertical-align: center; }\n    .image-detail > * img {\n      object-fit: contain;\n      max-width: 100%;\n      max-height: 100%; }\n    .image-detail > * .head {\n      text-align: right;\n      font-weight: bold; }\n    .image-detail > * table {\n      margin-left: 8px;\n      margin-right: 8px; }\n    .image-detail > * td {\n      color: white;\n      padding: 4px; }\n\n.close-btn {\n  position: fixed;\n  right: 16px;\n  top: 0px;\n  padding: 5px;\n  width: auto;\n  color: white; }\n  .close-btn button.close span {\n    color: white; }\n", ""]);
 
 // exports
 

@@ -83,7 +83,7 @@ export class ImageDetail extends React.Component {
         }
 
         return (
-            <div className="row image-detail-container">
+            <div className="image-detail-container">
                 <div className="close-btn">
                     <button type="button" className="close" aria-label="Close" onClick={this.close}>
                         <span aria-hidden="true">&times;</span>
