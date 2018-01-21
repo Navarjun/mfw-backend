@@ -61970,7 +61970,7 @@ var Navbar = exports.Navbar = function (_React$Component) {
                                 { to: '/', onClick: function onClick() {
                                         return _this2.menu(false);
                                     } },
-                                'Browse'
+                                'Collection'
                             )
                         )
                     ),
@@ -61981,26 +61981,35 @@ var Navbar = exports.Navbar = function (_React$Component) {
                             'div',
                             null,
                             _react2.default.createElement(
-                                _reactRouterDom.Link,
-                                { to: '/', onClick: function onClick() {
-                                        return _this2.menu(false);
-                                    } },
-                                'Visualization'
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        null,
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                _reactRouterDom.Link,
-                                { to: '/about', onClick: function onClick() {
-                                        return _this2.menu(false);
-                                    } },
+                                'a',
+                                { href: '/about.html' },
                                 'About'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: '/team.html' },
+                                'Team'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: '/press.html' },
+                                'Press'
                             )
                         )
                     )

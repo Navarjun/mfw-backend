@@ -44,7 +44,7 @@ export class FilterButton extends React.Component {
         return <div>
             {button}
             <div>
-                <ul onMouseLeave={this.hideDropdown} style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '10px', paddingTop: '40px', top: '10px', background: 'rgba(0,0,0,0)'}}>
+                <ul onMouseLeave={this.hideDropdown} style={{height: '300px', overflow: 'scroll', display: this.state.isSelected ? 'unset' : 'none', position: 'absolute', margin: 0, padding: '0px', paddingTop: '40px', top: '10px', background: 'rgba(0,0,0,0)'}}>
                     {values}
                 </ul>
             </div>

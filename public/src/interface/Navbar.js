@@ -19,10 +19,16 @@ export class Navbar extends React.Component {
                         <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="#">Collection<span className="sr-only">(current)</span></a>
+                                <a className="nav-link" href="/">Collection<span className="sr-only">(current)</span></a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">About</a>
+                                <a className="nav-link" href="/about.html">About</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/team.html">Team</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/press.html">Press</a>
                             </li>
                         </ul>
                     </div>

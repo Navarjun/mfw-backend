@@ -29,17 +29,22 @@ export class Navbar extends React.Component {
 
                 <div>
                     <div>
-                        <Link to="/" onClick={() => this.menu(false)}>Browse</Link>
+                        <Link to="/" onClick={() => this.menu(false)}>Collection</Link>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <Link to="/" onClick={() => this.menu(false)}>Visualization</Link>
+                        <a href="/about.html">About</a>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <Link to="/about" onClick={() => this.menu(false)}>About</Link>
+                        <a href="/team.html">Team</a>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <a href="/press.html">Press</a>
                     </div>
                 </div>
             </div>;
