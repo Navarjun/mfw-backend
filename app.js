@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(userAgent.express());
 
-app.use('/', index);
+// app.use('/', index);
 app.use('/users', users);
 
 app.use('/api/v1', function(req, res, next) {
@@ -44,7 +44,8 @@ app.use('/api/v1/docs', autoDocs(docConfig));
 
 // Research interface
 const researchInterface = require('./routes/researchInterface');
-app.use('/interface', researchInterface);
+// app.use('/interface', researchInterface);
+app.use('/', researchInterface);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
