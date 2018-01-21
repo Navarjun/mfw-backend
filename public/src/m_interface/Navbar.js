@@ -34,6 +34,11 @@ export class Navbar extends React.Component {
                 </div>
                 <div>
                     <div>
+                        <a href="/visualization.html">Visualization</a>
+                    </div>
+                </div>
+                <div>
+                    <div>
                         <a href="/about.html">About</a>
                     </div>
                 </div>

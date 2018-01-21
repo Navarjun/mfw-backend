@@ -61982,6 +61982,19 @@ var Navbar = exports.Navbar = function (_React$Component) {
                             null,
                             _react2.default.createElement(
                                 'a',
+                                { href: '/visualization.html' },
+                                'Visualization'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'a',
                                 { href: '/about.html' },
                                 'About'
                             )

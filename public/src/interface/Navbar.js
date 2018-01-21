@@ -22,6 +22,9 @@ export class Navbar extends React.Component {
                                 <a className="nav-link" href="/">Collection<span className="sr-only">(current)</span></a>
                             </li>
                             <li className="nav-item">
+                                <a className="nav-link" href="/visualization.html">Visualization</a>
+                            </li>
+                            <li className="nav-item">
                                 <a className="nav-link" href="/about.html">About</a>
                             </li>
                             <li className="nav-item">
