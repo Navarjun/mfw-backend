@@ -5,8 +5,8 @@ export class Explorer extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            data: [],
-            loading: true,
+            data: this.props.data,
+            loading: this.props.loading,
             page: 1,
             perPage: 20,
             imageDetail: undefined
@@ -16,12 +16,10 @@ export class Explorer extends React.Component {
         this.imageDetail = this.imageDetail.bind(this);
     }
 
-    componentWillMount () {
-        json('/api/v1/images', (err, data) => {
-            if (err) {
-                console.log(err);
-            }
-            this.setState({data: data.data, loading: false});
+    componentWillReceiveProps (nextProps) {
+        this.setState({
+            data: nextProps.data,
+            loading: nextProps.loading
         });
     }
 

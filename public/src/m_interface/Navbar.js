@@ -47,7 +47,7 @@ export class Navbar extends React.Component {
         return (
             <div className="row" style={{padding: '16px'}}>
                 {menu}
-                <Link to="/" className="nav-title">The Art of March</Link>
+                <Link to="/" className="nav-title">Art of the March</Link>
                 <button className="menu-button" onClick={() => this.menu(true)}>&equiv;</button>
             </div>
         );
