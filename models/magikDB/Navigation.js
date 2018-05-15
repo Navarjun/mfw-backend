@@ -46,7 +46,9 @@ Model.create = function (object) {
 };
 
 Model.get = function () {
-    return Model.find().exec();
+    return Model.find()
+        .populate('blogId pageId containerId', 'uri')
+        .exec();
 };
 
 Model.update = function (navigation) {
