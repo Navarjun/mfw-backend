@@ -5,7 +5,7 @@ const db = require('../models/db');
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    res.render('index');
+    res.render('pug/index');
 });
 
 module.exports = router;

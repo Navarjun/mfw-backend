@@ -1,0 +1,16 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    color: #00B7FF;
+}
+
+label.login-page {
+    display: block;
+}
+input.login-page {
+    margin-left: 10px;
+}
+

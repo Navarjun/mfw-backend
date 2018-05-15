@@ -7,9 +7,9 @@ const db = require('../models/db');
 router.get('/', function (req, res) {
     console.log(req.useragent.isMobile);
     if (req.useragent.isMobile) {
-        res.render('m_interface');
+        res.render('pug/m_interface');
     } else {
-        res.render('interface');
+        res.render('pug/interface');
     }
 });
 

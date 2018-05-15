@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p
+    form(name="login", action='')
+      label.login-page(for="username") Username
+        input.login-page(type="text", name="username")
+      label.login-page(for="password") Password
+        input.login-page(type="password", name="password")
+      input(type="submit")
+  script(src="/admin/login.bundle.js")
