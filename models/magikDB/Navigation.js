@@ -4,7 +4,6 @@ const MagikError = require('../../helpers/MagikError');
 
 const schema = new Schema({
     title: String,
-    index: { type: Number, unique: true },
     type: {
         type: String,
         enum: ['blog', 'page', 'container'],
@@ -40,13 +39,13 @@ Model.create = function (object) {
         .count()
         .exec()
         .then(function (count) {
-            object.index = count;
             return new Model(object).save();
         });
 };
 
 Model.get = function () {
     return Model.find()
+        .sort('createdAt')
         .populate('blogId pageId containerId', 'uri')
         .exec();
 };

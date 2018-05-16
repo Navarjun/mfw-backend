@@ -61169,7 +61169,6 @@ var Interface = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_Navbar.Navbar, null),
                 _react2.default.createElement(_FilterBar.FilterBar, { filtersUpdated: this.updateFilters }),
                 _react2.default.createElement(_Explorer.Explorer, { filterData: this.state.activeFilters, searchString: this.state.searchString })
             );

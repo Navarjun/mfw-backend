@@ -19,7 +19,7 @@ router.use('/*', function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('interface/index', { title: 'Archive', navOptions: req.navOptions });
+    res.redirect('interface/container/archive');
 });
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -35,7 +35,7 @@ router.get('/:type/:uri', function (req, res, next) {
         Model.container.findByUri(uri)
             .then(function (container) {
                 if (container) {
-                    res.render('interface/container', {navOptions: req.navOptions, container: container});
+                    res.render('interface/container', {navOptions: req.navOptions, container: container, title: container.title});
                 } else {
                     res.status(404);
                     next();
@@ -49,7 +49,7 @@ router.get('/:type/:uri', function (req, res, next) {
             .then(function (page) {
                 if (page) {
                     page.content = decodeURIComponent(page.content).replaceAll('&lt;', '<').replaceAll('&gt;', '>');
-                    res.render('interface/page', {navOptions: req.navOptions, page: page});
+                    res.render('interface/page', {navOptions: req.navOptions, page: page, title: page.title});
                 } else {
                     res.status(404);
                     next();
