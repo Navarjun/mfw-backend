@@ -45,7 +45,7 @@ app.use('/api/v1/docs', autoDocs(docConfig));
 // Research interface
 const researchInterface = require('./routes/researchInterface');
 // app.use('/interface', researchInterface);
-app.use('/', researchInterface);
+app.use('/archiveInterface', researchInterface);
 
 // Use sessions with management interface
 var session = require('express-session');
@@ -60,7 +60,8 @@ var managementAPI = require('./routes/admin/management_api');
 var publicUI = require('./routes/admin/publicUI');
 app.use('/admin/api', managementAPI);
 app.use('/admin', managementRouter);
-app.use('/interface', publicUI);
+// app.use('/interface', publicUI);
+app.use('/', publicUI);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -19,7 +19,7 @@ router.use('/*', function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.redirect('interface/container/archive');
+    res.redirect('container/archive');
 });
 
 String.prototype.replaceAll = function(search, replacement) {

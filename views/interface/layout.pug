@@ -20,9 +20,9 @@ html
             li.nav-item
               case val.type
                 when 'blog'
-                  a.nav-link(href= '/interface/blog/' + val.blogId.uri)= val.title
+                  a.nav-link(href= '/blog/' + val.blogId.uri)= val.title
                 when 'page'
-                  a.nav-link(href= '/interface/page/' + val.pageId.uri)= val.title
+                  a.nav-link(href= '/page/' + val.pageId.uri)= val.title
                 when 'container'
-                  a.nav-link(href= '/interface/container/' + val.containerId.uri)= val.title
+                  a.nav-link(href= '/container/' + val.containerId.uri)= val.title
     block content
