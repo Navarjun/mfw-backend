@@ -14,3 +14,19 @@ input.login-page {
     margin-left: 10px;
 }
 
+.page-container {
+    max-width: 600px;
+    margin-top: 30px
+}
+
+.page-container img {
+    width: 100%;
+}
+
+iframe.con-container {
+    width: 100%;
+    height: calc(100vh - 44px);
+    border: none;
+    margin: none;
+    padding: none;
+}

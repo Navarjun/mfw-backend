@@ -29,6 +29,11 @@ Model.get = function () {
     return Model.find().exec();
 };
 
+Model.findByUri = function (uri, published = true) {
+    return Model.findOne({uri: uri, published: published})
+        .exec();
+}
+
 Model.update = function (container) {
     return new Promise(function (resolve, reject) {
         if (container['tags[]']) {

@@ -38,7 +38,7 @@ class Interface extends React.Component {
     render () {
         return (
             <div>
-                <Navbar/>
+                {/* <Navbar/> */}
                 <FilterBar filtersUpdated={this.updateFilters}/>
                 <Explorer filterData={this.state.activeFilters} searchString={this.state.searchString}/>
             </div>

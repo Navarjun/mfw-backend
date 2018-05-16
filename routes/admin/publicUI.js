@@ -19,7 +19,7 @@ router.use('/*', function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('interface/index', { title: 'Express', navOptions: req.navOptions });
+    res.render('interface/index', { title: 'Archive', navOptions: req.navOptions });
 });
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -31,6 +31,19 @@ router.get('/:type/:uri', function (req, res, next) {
     const type = req.params.type;
     const uri = req.params.uri;
     switch (type) {
+    case 'container':
+        Model.container.findByUri(uri)
+            .then(function (container) {
+                if (container) {
+                    res.render('interface/container', {navOptions: req.navOptions, container: container});
+                } else {
+                    res.status(404);
+                    next();
+                }
+            }).catch(function(err) {
+                res.status(err.code || 500).send({ message: err.message || 'Server Error' });
+            });
+        break;
     case 'page':
         Model.page.findByUri(uri)
             .then(function (page) {
@@ -41,6 +54,8 @@ router.get('/:type/:uri', function (req, res, next) {
                     res.status(404);
                     next();
                 }
+            }).catch(function(err) {
+                res.status(err.code || 500).send({ message: err.message || 'Server Error' });
             });
         break;
     default:
