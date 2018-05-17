@@ -29,8 +29,8 @@ Post.getById = function (id) {
     return Post.findOne({_id: id}).exec();
 };
 
-Post.findByBlogId = function (blogId, limit = 10, skip = 0) {
-    return Post.find({blogId: blogId})
+Post.findByBlogId = function (blogId, limit = 10, skip = 0, fields = 'title uri publishedDate tags description') {
+    return Post.find({blogId: blogId, published: true})
         .limit(limit)
         .skip(skip)
         .exec();
@@ -47,6 +47,11 @@ Post.create = function (object) {
     }
     return new Post(object).save();
 };
+
+Post.getByBlogIdAndUri = function(blogId, uri) {
+    return Post.findOne({blogId: blogId, uri: uri}).exec();
+};
+
 Post.update = function (post) {
     return new Promise(function (resolve, reject) {
         if (post['tags[]']) {

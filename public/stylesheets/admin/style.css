@@ -16,11 +16,26 @@ input.login-page {
 
 .page-container {
     max-width: 600px;
-    margin-top: 30px
+    margin-top: 30px;
 }
 
 .page-container img {
     width: 100%;
+}
+
+.post-container {
+    max-width: 600px;
+    margin-top: 30px;
+}
+.post-container img{
+    width: 100%;
+}
+.post-overview {
+    margin-bottom: 15px;
+}
+.post-overview .post-description {
+    font-style: italic;
+    color: #555;
 }
 
 iframe.con-container {
@@ -29,4 +44,36 @@ iframe.con-container {
     border: none;
     margin: none;
     padding: none;
+}
+
+.post-list {
+    margin-top: 30px;
+    border-top: 1px solid rgb(180, 180, 180);
+    padding-top: 15px;
+}
+.post-list > a {
+    color: #222;
+}
+
+.post-details {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 15px;
+    margin-left: -15px;
+    margin-right: -15px;
+    transition: all 0.3s;
+}
+.post-details:hover {
+    background: #ddd;
+}
+
+.post-details > h5 {
+    margin-bottom: 0.2em;
+}
+.post-details > h5 > a {
+    color: #007bff;
+}
+
+.post-details > span.description {
+    
 }

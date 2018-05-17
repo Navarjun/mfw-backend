@@ -30,6 +30,7 @@ String.prototype.replaceAll = function(search, replacement) {
 router.get('/:type/:uri', function (req, res, next) {
     const type = req.params.type;
     const uri = req.params.uri;
+
     switch (type) {
     case 'container':
         Model.container.findByUri(uri)
@@ -58,9 +59,49 @@ router.get('/:type/:uri', function (req, res, next) {
                 res.status(err.code || 500).send({ message: err.message || 'Server Error' });
             });
         break;
+    case 'blog':
+            Model.blog.findByUri(uri)
+                .then(function(blog) {
+                    if (blog) {
+                        Model.post.findByBlogId(blog._id, 10, 0, '-content')
+                            .then(function (posts) {
+                                console.log(posts.length);
+                                res.render('interface/blog', {navOptions: req.navOptions, posts: posts, blog: blog, title: blog.title});
+                            }).catch(function (err) {
+                                res.status(err.code || 500).send({ message: err.message || 'Server Error' });
+                            });
+                    } else {
+                        res.status(404).send({ message: 'Requested blog not found' });
+                    }
+                }).catch(function (err) {
+                    res.status(err.code || 500).send({ message: err.message || 'Server Error' });
+                });
+            break;
     default:
         res.status(200).send({message: `No entity of ${type} exists`});
     }
+});
+
+router.get('/blog/blog/post/new-post', function(req, res) {
+    console.log('wow');
+    const blogUri = req.params.bloguri || 'blog';
+    const postUri = req.params.posturi || 'new-post';
+    Model.blog.findByUri(blogUri)
+        .then(function(blog) {
+            if (blog) {
+                Model.post.getByBlogIdAndUri(blog._id, postUri)
+                    .then(function (post) {
+                        post.content = decodeURIComponent(post.content).replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+                        res.render('interface/post', {navOptions: req.navOptions, post: post, blog: blog, title: post.title});
+                    }).catch(function (err) {
+                        res.status(err.code || 500).send({ message: err.message || 'Server Error' });
+                    });
+            } else {
+                res.status(404).send({ message: 'Requested blog not found' });
+            }
+        }).catch(function (err) {
+            res.status(err.code || 500).send({ message: err.message || 'Server Error' });
+        });
 });
 
 module.exports = router;

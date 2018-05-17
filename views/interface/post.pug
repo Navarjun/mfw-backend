@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    div.container.post-container
+        .row.post-overview.lead
+            .col-sm-12
+                h2= title
+                p.post-description= post.description
+        .row
+            .col-sm-12!= post.content

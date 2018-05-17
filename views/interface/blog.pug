@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    div.container.page-container
+        .row
+            .col-sm-12
+                h2= title
+                p= blog.description
+        .row
+            .col-sm-12
+                .post-list
+                    each val, index in posts
+                        a(href= '/blog/'+blog.uri+'/post/'+val.uri)
+                            .post-details
+                                h5.title #{val.title}
+                                span.description #{val.description}
