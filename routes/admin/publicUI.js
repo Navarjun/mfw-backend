@@ -82,7 +82,7 @@ router.get('/:type/:uri', function (req, res, next) {
     }
 });
 
-router.get('/blog/blog/post/new-post', function(req, res) {
+router.get('/blog/:bloguri/post/:posturi', function(req, res) {
     console.log('wow');
     const blogUri = req.params.bloguri || 'blog';
     const postUri = req.params.posturi || 'new-post';
