@@ -65381,7 +65381,7 @@ var Containers = exports.Containers = function (_React$Component) {
             var obj = this.state.creatingNew ? _lodash2.default.cloneDeep(this.state.creatingNew) : _lodash2.default.cloneDeep(this.state.editingContainer);
             obj[name] = value;
 
-            this.setState(this.state.creatingNew ? { creatingNew: obj } : { editingBlog: obj });
+            this.setState(this.state.creatingNew ? { creatingNew: obj } : { editingContainer: obj });
         }
     }]);
 
