@@ -68120,57 +68120,29 @@ var ImageDetail = exports.ImageDetail = function (_React$Component) {
                 //     { dbName: 'mAdditionalNotes', name: 'additional notes' },
                 //     { dbName: 'mAdditionalKeywords', name: 'additional keywords' }] }
             }];
-
             var children = vars.map(function (d, i) {
-                var trs = [];
+                var arr = [];
                 for (var _i in d.values) {
                     var e = d.values[_i];
-                    if (Array.isArray(data[e.dbName])) {
-                        trs.push(_react2.default.createElement(
-                            'tr',
-                            { key: _i },
-                            _react2.default.createElement(
-                                'td',
-                                { className: 'head' },
-                                e.name
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                data[e.dbName].join(',')
-                            )
-                        ));
-                    } else {
-                        trs.push(_react2.default.createElement(
-                            'tr',
-                            { key: _i },
-                            _react2.default.createElement(
-                                'td',
-                                { className: 'head' },
-                                e.name
-                            ),
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                data[e.dbName]
-                            )
-                        ));
-                    }
+                    arr.push(_react2.default.createElement(
+                        'div',
+                        { className: 'image-detail-table-item', key: _i },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'image-detail-colname' },
+                            e.name
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'image-detail-val' },
+                            Array.isArray(data[e.dbName]) ? data[e.dbName].join(', ') : data[e.dbName]
+                        )
+                    ));
                 }
-                var children = _react2.default.createElement(
-                    'table',
-                    null,
-                    _react2.default.createElement(
-                        'tbody',
-                        null,
-                        trs
-                    )
-                );
-
                 return _react2.default.createElement(
                     'div',
-                    { key: i },
-                    children
+                    { className: 'image-detail-table', key: i },
+                    arr
                 );
             });
 
@@ -72380,7 +72352,7 @@ exports = module.exports = __webpack_require__(218)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px;\n  overflow-y: hidden; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: scroll;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px);\n  overflow-y: hidden;\n  width: 100%;\n  overflow-x: scroll;\n  overflow-y: hidden;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: #f8f9fa;\n  list-style: none;\n  margin: 0;\n  padding: 10px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  transition: all 0.5s; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-button-expand {\n  float: right;\n  line-height: 1em;\n  font-size: 1.3em; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n.image-detail-container {\n  position: absolute;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.7);\n  z-index: 1; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 80%;\n  height: 80%;\n  background: white;\n  z-index: 1;\n  margin: auto;\n  border-radius: 15px;\n  box-shadow: 2px 2px 15px 0px black; }\n  #image-detail > * {\n    width: 50%;\n    padding: 2%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div {\n      width: 100%; }\n      #image-detail > * div .head {\n        font-weight: bold; }\n      #image-detail > * div .tab {\n        padding-right: 8px; }\n  #image-detail table tr td {\n    padding: 8px; }\n  #image-detail table tr td:first-child {\n    text-align: right; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    padding: 5px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n\n.close-icon {\n  border: 1px solid transparent;\n  background-color: transparent;\n  display: inline-block;\n  vertical-align: middle;\n  outline: 0;\n  cursor: pointer;\n  font-family: Helvetica,Arial,Verdana;\n  width: 0px; }\n\n.close-icon::after {\n  content: \"X\";\n  display: block;\n  width: 15px;\n  height: 15px;\n  position: relative;\n  background-color: grey;\n  z-index: 1;\n  left: -38px;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  padding: 2px;\n  border-radius: 50%;\n  text-align: center;\n  color: white;\n  font-weight: normal;\n  font-size: 12px;\n  box-shadow: 0 0 2px darkgrey;\n  cursor: pointer;\n  line-height: 1em; }\n\n.close-icon:focus {\n  outline: none; }\n", ""]);
+exports.push([module.i, "body {\n  background: #f8f9fa !important;\n  padding: 0px;\n  margin: 0px;\n  overflow-y: hidden; }\n\n.list-group-module {\n  overflow: hidden; }\n\n.list-unstyled {\n  padding-left: 10px;\n  overflow: auto;\n  height: 100%; }\n\n.list-unstyled li .number {\n  color: #555;\n  font-size: 0.8em; }\n\n.list {\n  display: flex;\n  align-content: flex-start;\n  justify-content: flex-start;\n  flex-wrap: wrap; }\n\n.list > li {\n  width: 30%;\n  padding: 5px;\n  cursor: pointer;\n  transition: all 0.3s; }\n\n.list > li:hover {\n  background: #888; }\n\n.selected-filter-value > span.filter-value {\n  text-decoration: underline; }\n\n.explorer {\n  display: flex;\n  align-content: flex-start;\n  flex-flow: column wrap;\n  justify-content: flex-start;\n  height: calc(100% - 56px);\n  width: 100%;\n  overflow-x: auto;\n  overflow-y: hidden;\n  background: #f8f9fa !important;\n  position: relative; }\n\n.explorer-image {\n  width: 300px;\n  height: auto;\n  vertical-align: top;\n  padding: 10px; }\n\n#filter-list {\n  position: absolute; }\n\n.filter-button {\n  width: 150px;\n  background: none;\n  border: none;\n  text-align: left;\n  border-bottom: black solid 2px;\n  margin: 8px;\n  margin-bottom: 0px; }\n  .filter-button.concern {\n    border-bottom-color: #FF7F50; }\n  .filter-button.strategy {\n    border-bottom-color: #20B2AA; }\n  .filter-button.contains {\n    border-bottom-color: #8B4513; }\n\n.filter-button:focus {\n  outline: none; }\n\n.filter-button-li {\n  background: #f8f9fa;\n  list-style: none;\n  margin: 0;\n  padding: 10px;\n  padding-top: 7px;\n  padding-bottom: 7px;\n  transition: background 0.2s;\n  display: flex;\n  justify-content: space-between;\n  width: 150px;\n  cursor: pointer;\n  transition: all 0.5s; }\n\n.filter-button-li:hover {\n  background: #888; }\n\n.filter-button-li > * {\n  max-width: 100px;\n  overflow-x: auto;\n  word-wrap: break-word;\n  font-size: 0.9em; }\n\n.filter-button-li.active {\n  background: #888; }\n\n.filter-button-expand {\n  float: right;\n  line-height: 1em;\n  font-size: 1.3em; }\n\n.filter-count {\n  font-size: 0.8em;\n  color: #888; }\n\n.btn-concern {\n  color: white;\n  background-color: #FF7F50;\n  border-color: #d16740; }\n  .btn-concern:hover {\n    background-color: #d16740;\n    border-color: #FF7F50; }\n\n.btn-strategy {\n  color: white;\n  background-color: #20B2AA;\n  border-color: #16827c; }\n  .btn-strategy:hover {\n    background-color: #16827c;\n    border-color: #20B2AA; }\n\n.btn-contains {\n  color: white;\n  background-color: #8B4513;\n  border-color: #6b340d; }\n  .btn-contains:hover {\n    background-color: #6b340d;\n    border-color: #8B4513; }\n\n.image-detail-container {\n  position: absolute;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.7);\n  z-index: 1; }\n\n#image-detail {\n  position: absolute;\n  display: flex;\n  width: 80%;\n  height: 80%;\n  background: white;\n  z-index: 1;\n  margin: auto;\n  border-radius: 15px;\n  box-shadow: 2px 2px 15px 0px black; }\n  #image-detail > * {\n    width: 50%;\n    padding: 2%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column; }\n    #image-detail > * img {\n      object-fit: contain;\n      max-height: 100%;\n      max-width: 100%; }\n    #image-detail > * div.image-detail-table {\n      overflow-y: auto;\n      display: flex;\n      flex-direction: column;\n      padding-top: 30px;\n      padding-bottom: 30px; }\n      #image-detail > * div.image-detail-table div.image-detail-table-item {\n        display: flex; }\n        #image-detail > * div.image-detail-table div.image-detail-table-item div.image-detail-colname {\n          font-weight: bold;\n          flex: 1; }\n        #image-detail > * div.image-detail-table div.image-detail-table-item div.image-detail-val {\n          flex: 2; }\n  #image-detail table tr td {\n    padding: 8px; }\n  #image-detail table tr td:first-child {\n    text-align: right; }\n  #image-detail .close-btn {\n    position: absolute;\n    right: 16px;\n    padding: 5px;\n    width: auto; }\n\n/* UTILITIES */\n.clickable {\n  cursor: pointer; }\n\n.margin-left-sm {\n  margin-left: 8px; }\n\n.margin-right-sm {\n  margin-left: 8px; }\n\n.margin-right-md {\n  margin-left: 16px; }\n\n.hover-glow-light:hover {\n  text-shadow: 0 0 3px #fff; }\n\n.close-icon {\n  border: 1px solid transparent;\n  background-color: transparent;\n  display: inline-block;\n  vertical-align: middle;\n  outline: 0;\n  cursor: pointer;\n  font-family: Helvetica,Arial,Verdana;\n  width: 0px; }\n\n.close-icon::after {\n  content: \"X\";\n  display: block;\n  width: 15px;\n  height: 15px;\n  position: relative;\n  background-color: grey;\n  z-index: 1;\n  left: -38px;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  margin: auto;\n  padding: 2px;\n  border-radius: 50%;\n  text-align: center;\n  color: white;\n  font-weight: normal;\n  font-size: 12px;\n  box-shadow: 0 0 2px darkgrey;\n  cursor: pointer;\n  line-height: 1em; }\n\n.close-icon:focus {\n  outline: none; }\n", ""]);
 
 // exports
 

@@ -46,36 +46,16 @@ export class ImageDetail extends React.Component {
             //     { dbName: 'mAdditionalNotes', name: 'additional notes' },
             //     { dbName: 'mAdditionalKeywords', name: 'additional keywords' }] }
         ];
-
         const children = vars.map((d, i) => {
-            const trs = [];
+            const arr = [];
             for (let i in d.values) {
                 const e = d.values[i];
-                if (Array.isArray(data[e.dbName])) {
-                    trs.push(<tr key={i}>
-                        <td className="head">{e.name}</td>
-                        <td>{
-                            data[e.dbName].join(',')
-                        }</td>
-                    </tr>);
-                } else {
-                    trs.push(<tr key={i}>
-                        <td className="head">{e.name}</td>
-                        <td>{
-                            data[e.dbName]
-                        }</td>
-                    </tr>);
-                }
+                arr.push(<div className='image-detail-table-item' key={i}>
+                    <div className='image-detail-colname'>{e.name}</div>
+                    <div className='image-detail-val'>{Array.isArray(data[e.dbName]) ? data[e.dbName].join(', ') : data[e.dbName]}</div>
+                </div>);
             }
-            const children = <table>
-                <tbody>
-                    {trs}
-                </tbody>
-            </table>;
-
-            return <div key={i}>
-                {children}
-            </div>;
+            return <div className='image-detail-table' key={i}>{arr}</div>;
         });
 
         return (

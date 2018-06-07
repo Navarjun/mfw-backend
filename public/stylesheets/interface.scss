@@ -22,7 +22,7 @@ body {
 }
 .list-unstyled {
     padding-left: 10px;
-    overflow: scroll;
+    overflow: auto;
     height: 100%;
 }
 .list-unstyled li .number {
@@ -56,9 +56,8 @@ body {
     flex-flow: column wrap;
     justify-content: flex-start;
     height: calc(100% - 56px);
-    overflow-y: hidden;
     width: 100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     background: #f8f9fa!important;
     position: relative;
@@ -192,13 +191,21 @@ body {
             max-height: 100%;
             max-width: 100%;
         }
-        div {
-            width: 100%;
-            .head {
-                font-weight: bold;
-            }
-            .tab {
-                padding-right: 8px;
+        div.image-detail-table {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            div.image-detail-table-item {
+                display: flex;
+                div.image-detail-colname {
+                    font-weight: bold;
+                    flex: 1;
+                }
+                div.image-detail-val {
+                    flex: 2;
+                }
             }
         }
     }
