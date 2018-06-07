@@ -39388,7 +39388,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         // Regex for replacing addition symbol with a space
     search = /([^&=]+)=?([^&]*)/g,
         decode = function decode(s) {
-        return decodeURIComponent(s.replace(pl, " "));
+        return decodeURIComponent(s.replace(pl, ' '));
     },
         query = window.location.search.substring(1);
 
