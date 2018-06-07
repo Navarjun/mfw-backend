@@ -15,6 +15,7 @@ body {
     background: $background-color!important;
     padding: 0px;
     margin: 0px;
+    overflow-y: hidden;
 }
 .list-group-module {
     overflow: hidden;
@@ -54,9 +55,11 @@ body {
     align-content: flex-start;
     flex-flow: column wrap;
     justify-content: flex-start;
-    height: calc(100% - 56px - 103px);
+    height: calc(100% - 56px);
+    overflow-y: hidden;
     width: 100%;
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
     background: #f8f9fa!important;
     position: relative;
 }

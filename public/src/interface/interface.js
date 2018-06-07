@@ -13,7 +13,8 @@ class Interface extends React.Component {
         this.shouldUpdate = false;
         this.state = {
             activeFilters: [],
-            searchString: undefined
+            searchString: undefined,
+            count: 5949
         };
     }
 
@@ -39,8 +40,10 @@ class Interface extends React.Component {
         return (
             <div>
                 {/* <Navbar/> */}
-                <FilterBar filtersUpdated={this.updateFilters}/>
-                <Explorer filterData={this.state.activeFilters} searchString={this.state.searchString}/>
+                <FilterBar filtersUpdated={this.updateFilters} count={this.state.count}/>
+                <Explorer filterData={this.state.activeFilters} searchString={this.state.searchString} updateCount={(count) => {
+                    this.setState({count: count});
+                }}/>
             </div>
         );
     }

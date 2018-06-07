@@ -5,10 +5,10 @@ import {json} from 'd3';
 
 (window.onpopstate = function () {
     var match,
-        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        pl = /\+/g, // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-        query  = window.location.search.substring(1);
+        decode = function (s) { return decodeURIComponent(s.replace(pl, ' ')); },
+        query = window.location.search.substring(1);
 
     const urlParams = {};
     while (match = search.exec(query)) {

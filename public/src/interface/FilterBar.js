@@ -205,6 +205,15 @@ export class FilterBar extends React.Component {
             return null;
         });
 
+        const searchTab = this.state.searchString
+            ? <li>
+                <span className='btn btn-sm margin-right-sm btn-success'>
+                    {this.state.searchString}
+                    <span className="margin-left-sm clickable hover-glow-light" aria-hidden="true" onClick={this.removeSearch}>&times;</span>
+                </span>
+            </li>
+            : null;
+
         return (
             <div>
                 <div className="navbar navbar-expand-lg navbar-light bg-light" style={{zIndex: 10}}>
@@ -230,9 +239,13 @@ export class FilterBar extends React.Component {
                     </div>
                 </div>
                 <div className="navbar navbar-expand-lg bg-light">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav mr-auto">
                         {filterTabs}
+                        {searchTab}
                     </ul>
+                    <span className="navbar-text">
+                        Total images: {this.props.count ? this.props.count : 5949}
+                    </span>
                 </div>
                 {/* {filterList} */}
             </div>

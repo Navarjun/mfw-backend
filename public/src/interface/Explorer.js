@@ -11,19 +11,40 @@ export class Explorer extends React.Component {
             loading: true,
             page: 3,
             perPage: 10,
-            imageDetail: undefined
+            imageDetail: undefined,
+            shouldUpdateCount: false
         };
+        this.allImages = [];
+        this.totalImagesInDb = 5949;
         this.scroll = this.scroll.bind(this);
         this.wheel = this.wheel.bind(this);
         this.imageDetail = this.imageDetail.bind(this);
+        this.loadMore = this.loadMore.bind(this);
     }
 
-    componentWillMount () {
-        json('/api/v1/images', (err, data) => {
+    componentDidUpdate () {
+        if (this.state.shouldUpdateCount) {
+            this.setState({shouldUpdateCount: false});
+            this.props.updateCount(this.state.total);
+        }
+    }
+
+    loadMore (pageNumber = 0) {
+        if (this.allImages.length >= this.totalImagesInDb) {
+            return;
+        }
+        json('/api/v1/images?pageSize=100&pageNumber=' + pageNumber, (err, data) => {
             if (err) {
                 console.log(err);
             }
-            this.setState({data: data.data, loading: false});
+            this.allImages = this.allImages.concat(data.data);
+            if (!this.props.searchString && this.props.filterData.length <= 0) {
+                this.setState({data: this.allImages}, () => {
+                    this.loadMore(pageNumber + 1);
+                });
+            } else {
+                this.loadMore(pageNumber + 1);
+            }
         });
     }
 
@@ -35,7 +56,7 @@ export class Explorer extends React.Component {
                     console.log(err);
                     return;
                 }
-                this.setState({data: data.data, loading: false});
+                this.setState({data: data.data, total: data.data.length, page: 3, pageSize: 100, totalPages: Math.ceil(data.data.length / this.state.perPage), shouldUpdateCount: true, loading: false});
             });
         } else if (nextProps.filterData && nextProps.filterData.length > 0) {
             this.setState({loading: true});
@@ -54,14 +75,24 @@ export class Explorer extends React.Component {
                     console.log(err);
                     return;
                 }
-                this.setState({data: data.data, loading: false});
+                this.setState({data: data.data, total: data.data.length, page: 3, pageSize: 100, totalPages: Math.ceil(data.data.length / this.state.perPage), shouldUpdateCount: true, loading: false});
             });
         } else {
+            if (this.allImages.length >= this.totalImagesInDb) {
+                this.setState({data: this.allImages, total: this.totalImagesInDb, page: 3, pageSize: 100, totalPages: Math.ceil(this.allImages.length / this.state.perPage), shouldUpdateCount: true, loading: false});
+                return;
+            }
+            this.allImages = [];
+
             json('/api/v1/images', (err, data) => {
                 if (err) {
                     console.log(err);
                 }
-                this.setState({data: data.data, loading: false});
+                this.allImages = data.data;
+                this.totalImagesInDb = data.total;
+                this.setState({data: data.data, total: data.total, page: 3, pageSize: 100, totalPages: Math.ceil(data.data.length / this.state.perPage), shouldUpdateCount: true, loading: false}, () => {
+                    this.loadMore(1);
+                });
             });
         }
     }
@@ -95,7 +126,7 @@ export class Explorer extends React.Component {
     scroll (e) {
         const ele = document.getElementById('explorer-div');
         if (ele.scrollWidth - 500 < ele.scrollLeft + ele.clientWidth &&
-            this.state.page < parseFloat(this.state.data.length) / this.state.perPage
+            (this.state.page <= parseFloat(this.state.data.length) / this.state.perPage)
         ) {
             this.setState({page: this.state.page + 1});
         }
@@ -121,6 +152,7 @@ export class Explorer extends React.Component {
         const overlay = this.state.imageDetail
             ? <ImageDetail filename={this.state.imageDetail} close={() => this.setState({imageDetail: null})}/>
             : null;
+
         return <div style={{position: 'relative'}} onWheel={this.wheel} onScroll={this.scroll}>
             {overlay}
             <div className='explorer' id='explorer-div'>
