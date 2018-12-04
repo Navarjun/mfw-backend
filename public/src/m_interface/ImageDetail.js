@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {json} from 'd3';
 
 export class ImageDetail extends React.Component {

@@ -154,7 +154,7 @@ class Interface extends React.Component {
 
     render () {
         return (
-            <Router basename="/">
+            <Router basename="/archiveInterface">
                 <div className="container-fluid">
                     <Navbar/>
                     <Filter resultsCount={this.state.totalImages} mConcern={this.state.mConcernCount} mStrategy={this.state.mStrategyCount} mContains={this.state.mContainsCount} updateFilter={this.filter} filterClicked={this.filter} activeFilters={this.state.activeFilters}/>
