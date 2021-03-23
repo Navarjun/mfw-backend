@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const process = require('process');
 const passwordSalt = bcrypt.genSaltSync(process.env.ENCRYPTION_SALT_ROUNDS || 10);
 const MagikError = require('../../helpers/MagikError');

@@ -59078,7 +59078,7 @@ var Explorer = exports.Explorer = function (_React$Component) {
 }(_react2.default.Component);
 
 function getImageUrl(filename) {
-    return 'https://s3.us-east-2.amazonaws.com/artofthemarch/med_res/' + filename.replace('.JPG', '.jpg');
+    return 'https://artofthemarch.s3.us-east-2.amazonaws.com/med_res/' + filename.replace('.JPG', '.jpg');
 }
 
 /***/ }),
@@ -72351,7 +72351,7 @@ if(false) {
 /* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(220)(undefined);
+exports = module.exports = __webpack_require__(220)(false);
 // imports
 
 
